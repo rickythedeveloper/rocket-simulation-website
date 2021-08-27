@@ -6,7 +6,7 @@
     },
     "extends": [
         "plugin:react/recommended",
-        "airbnb"
+        "airbnb-typescript/base"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -14,12 +14,66 @@
             "jsx": true
         },
         "ecmaVersion": 12,
-        "sourceType": "module"
+        "sourceType": "module",
+        "project": "./tsconfig.json"
     },
     "plugins": [
         "react",
         "@typescript-eslint"
     ],
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    },
     "rules": {
+        "import/extensions": [
+            "off" // This should be changed somehow...
+        ],
+        "import/no-extraneous-dependencies": [
+            "off"
+        ],
+        "no-plusplus": [
+            "off"
+        ],
+        "max-len": [
+            "error",
+            {
+                "code": 120
+            }
+        ],
+        "no-tabs": [
+            "off"
+        ],
+        "@typescript-eslint/indent": [
+            "error",
+            "tab"
+        ],
+        "@typescript-eslint/member-delimiter-style": [
+            "error",
+            {
+                "multiline": {
+                    "delimiter": "semi", // 'none' or 'semi' or 'comma'
+                    "requireLast": true
+                },
+                "singleline": {
+                    "delimiter": "semi", // 'semi' or 'comma'
+                    "requireLast": false
+                }
+            }
+        ],
+        "no-continue": [
+            "off"
+        ],
+        "no-underscore-dangle": [
+            "error",
+            {
+                "allowAfterThis": true
+            }
+        ],
+        "eol-last": [
+            "error",
+            "always"
+        ]
     }
 }
