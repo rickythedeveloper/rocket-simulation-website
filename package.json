@@ -17,13 +17,24 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "npm run buildSass && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "compile": "tsc --noEmit",
     "lint": "eslint src/ --ext .ts,.tsx",
     "lint:fix": "eslint src/ --ext .ts,.tsx --fix",
+    "buildSass": "sass src/sass:src/css",
+    "watch": "npm-watch",
     "eject": "react-scripts eject"
+  },
+  "watch": {
+    "buildSass": {
+      "patterns": [
+        "src/sass/"
+      ],
+      "extensions": "sass",
+      "runOnChangeOnly": true
+    }
   },
   "eslintConfig": {
     "extends": [
@@ -52,6 +63,7 @@
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.24.0",
-    "eslint-plugin-react-hooks": "^4.2.0"
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "npm-watch": "^0.11.0"
   }
 }
