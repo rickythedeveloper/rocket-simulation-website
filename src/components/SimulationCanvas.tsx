@@ -29,10 +29,10 @@ export default class SimulatorCanvas extends React.Component<Props, State> {
 		labelPosition: { x: 0, y: 0 }, 
 	};
 
-	constructor(props: Props) {
-		super(props);
-
-		this.state = this.defaultState;
+	componentDidMount() {
+		setInterval(() => {
+			this.setState(this.defaultState);
+		}, 5000);
 		setInterval(() => {
 			this.setState({
 				labelPosition: { x: this.state.labelPosition.x + 1, y:this.state.labelPosition.y + 1 },
@@ -44,10 +44,11 @@ export default class SimulatorCanvas extends React.Component<Props, State> {
 				},
 			});
 		}, 50);
+	}
 
-		setInterval(() => {
-			this.setState(this.defaultState);
-		}, 5000);
+	constructor(props: Props) {
+		super(props);
+		this.state = this.defaultState;
 	}
 
 	moveLabel(x: number, y: number) {
