@@ -1,13 +1,14 @@
 import './css/styles.css';
 import React from 'react';
-import SomeComponent from './components/SomeComponent';
+import SimulatorCanvas from './components/SimulationCanvas';
 
 function App() {
 	return (
 		<div className="App">
 			<header className="App-header">
-				<div>hello?</div>
-				<SomeComponent/>
+				<div>before canvas</div>
+				<SimulatorCanvas/>
+				<div>after canvas</div>
 			</header>
 		</div>
 	);
