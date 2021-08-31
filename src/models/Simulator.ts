@@ -56,6 +56,7 @@ export default class Simulator {
 				}
 			}
 
+			// TODO implement a better collision handler
 			if (willCollide) {
 				massiveBody.speed = Vector2D.zero();
 			} else {

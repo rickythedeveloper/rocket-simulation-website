@@ -8,7 +8,7 @@ earth.boundaryFunction = (offset: Vector2D) => offset.magnitude < EARTH_RADIUS;
 
 const ROCKET_MASS = 1000;
 const ROCKET_SIZE = 10;
-const rocket = new Body(ROCKET_MASS, new Vector2D(0, EARTH_RADIUS + 100));
+const rocket = new Body(ROCKET_MASS, new Vector2D(0, EARTH_RADIUS + 500));
 rocket.boundaryFunction = (offset: Vector2D) => {
 	return offset.x > -ROCKET_SIZE / 2 && offset.x < ROCKET_SIZE / 2
 	&& offset.y > -ROCKET_SIZE / 2 && offset.y < ROCKET_SIZE / 2;
@@ -21,3 +21,5 @@ rocket.testPoints = [
 ];
 
 export { earth, rocket };
+export { EARTH_RADIUS };
+export { ROCKET_MASS };
