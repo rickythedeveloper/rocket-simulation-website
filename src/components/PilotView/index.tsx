@@ -49,6 +49,8 @@ export default class PilotView extends React.Component<Props, State> {
 					width: `${ROCKET_SIZE}px`,
 					height: `${ROCKET_SIZE}px`,
 					top: `${ROCKET_BOTTOM_FROM_VIEW_TOP - ROCKET_SIZE}px`,
+					left: `${50}%`,
+					transform: 'translate(-50%, 0)',
 				}}/>
 			</div>
 		);
