@@ -21,3 +21,4 @@ rocket.testPoints = [
 ];
 
 export { earth, rocket };
+export { EARTH_RADIUS };

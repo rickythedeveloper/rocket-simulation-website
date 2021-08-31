@@ -1,7 +1,7 @@
 import './css/styles.css';
 import React from 'react';
-import SimulatorCanvas from './components/SimulationCanvas';
 import KeyboardStates from './utils/KeyboardStates';
+import SimulatorScreen from './components/SimulatorScreen';
 
 function App() {
 	const keyboardListener = new KeyboardStates();
@@ -10,12 +10,7 @@ function App() {
 	return (
 		<div className="App">
 			<div id='content'>
-				<div className='simulatorScreen' style={{
-					height: '200px',
-					width: '200px',
-				}}>
-					<SimulatorCanvas parentSize={{ height: 200, width: 200 }}/>
-				</div>
+				<SimulatorScreen/>
 			</div>
 		</div>
 	);
