@@ -34,8 +34,12 @@ export default class Simulator {
 
 	rollForward(dt: number) {
 		const forces = this.calculateForces();
-		this.massiveBodies.forEach((massiveBody, index) => {
-			const { positionDelta, speedDelta } = massiveBody.calculateDelta(dt, forces[index]);
+		for (let index = 0; index < this.massiveBodies.length; index++) {
+			const massiveBody = this.massiveBodies[index];
+			const deltas = massiveBody.calculateDelta(dt, forces[index]);
+			if (deltas === null) continue;
+
+			const { positionDelta, speedDelta } = deltas;
 			const newPosition = Vector2D.sum(massiveBody.position, positionDelta);
 			const newSpeed = Vector2D.sum(massiveBody.speed, speedDelta);
 
@@ -56,13 +60,12 @@ export default class Simulator {
 				}
 			}
 
-			// TODO implement a better collision handler
 			if (willCollide) {
-				massiveBody.speed = Vector2D.zero();
+				if (massiveBody.collisionHandler) massiveBody.collisionHandler();
 			} else {
 				massiveBody.position = newPosition;
 				massiveBody.speed = newSpeed;
 			}
-		});
+		}
 	}
 }

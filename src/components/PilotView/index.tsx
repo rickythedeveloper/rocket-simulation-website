@@ -16,7 +16,7 @@ const DEFAULT_STATE: State = {
 	height: 0,
 };
 
-const ROCKET_SIZE = 250;
+const ROCKET_SIZE = 100;
 const ROCKET_BOTTOM_FROM_VIEW_TOP = 500;
 
 export default class PilotView extends React.Component<Props, State> {

@@ -42,6 +42,14 @@ export default class SimulatorScreen extends React.Component<Props, State> {
 		this.simulator = new Simulator();
 		this.simulator.addBodies(earth, rocket);
 		this.state = DEFAULT_STATE;
+		rocket.collisionHandler = () => {
+			if (rocket.speed.magnitude < 10) {
+				console.log('LANDED');
+			} else {
+				console.log('EXPLODE');
+				rocket.canMove = false;
+			}
+		};
 
 		const keyboardListener = new KeyboardStates();
 		keyboardListener.addKey('ArrowUp', () => {

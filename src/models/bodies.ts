@@ -5,6 +5,7 @@ const EARTH_RADIUS = 6371000;
 const EARTH_MASS = 6 * 10 ** 24;
 const earth = new Body(EARTH_MASS);
 earth.boundaryFunction = (offset: Vector2D) => offset.magnitude < EARTH_RADIUS;
+earth.canMove = false;
 
 const ROCKET_MASS = 1000;
 const ROCKET_SIZE = 10;

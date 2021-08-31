@@ -13,6 +13,8 @@ export default class Rocket extends React.Component<Props, State> {
 			alignItems: 'center',
 			justifyContent: 'center',
 			display: 'flex',
+			objectFit: 'contain',
+			overflow: 'hidden',
 			...this.props.style,
 		};
 		return (
