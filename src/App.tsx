@@ -9,11 +9,14 @@ function App() {
 
 	return (
 		<div className="App">
-			<header className="App-header">
-				<div>before canvas</div>
-				<SimulatorCanvas/>
-				<div>after canvas</div>
-			</header>
+			<div id='content'>
+				<div className='simulatorScreen' style={{
+					height: '200px',
+					width: '200px',
+				}}>
+					<SimulatorCanvas parentSize={{ height: 200, width: 200 }}/>
+				</div>
+			</div>
 		</div>
 	);
 }
