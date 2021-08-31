@@ -17,7 +17,7 @@ export default class Body {
 		const unnaturalForce = this.unnaturalForce ? this.unnaturalForce : Vector2D.zero();
 		const acceleration = Vector2D.sum(force, unnaturalForce).scaled(1 / this.mass);
 		const positionDelta = Vector2D.sum(this.speed.scaled(dt), acceleration.scaled(0.5 * dt ** 2));
-		const speedDelta = Vector2D.sum(this.speed, acceleration.scaled(dt));
+		const speedDelta = acceleration.scaled(dt);
 		return { positionDelta, speedDelta };
 	}
 }
