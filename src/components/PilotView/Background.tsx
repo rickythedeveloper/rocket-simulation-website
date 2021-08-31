@@ -2,6 +2,7 @@ import React, { CSSProperties } from 'react';
 
 interface Props {
 	cameraHeight: number;
+	rocketBottomY: number;
 	style?: CSSProperties;
 }
 interface State {
@@ -41,13 +42,13 @@ export default class Background extends React.Component<Props, State> {
 			...this.props.style,
 		};
 
-		const landTop = 400 + this.props.cameraHeight; // TODO: Change 400 to wherever the rocket is
+		const landTop = this.props.rocketBottomY + this.props.cameraHeight;
 		const landStyle: CSSProperties = {
 			position: 'absolute',
 			backgroundColor: '#3f3',
 			top: `${landTop}px`,
 			width: '100%',
-			height: '100px',
+			height: '100%',
 			borderTop: '5px solid black',
 		};
 

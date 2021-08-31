@@ -8,10 +8,7 @@ interface State {}
 
 export default class Rocket extends React.Component<Props, State> {
 	render() {
-		const rocketSize = 250;
 		const rocketStyle: CSSProperties = {
-			width: `${rocketSize}px`,
-			height: `${rocketSize}px`,
 			backgroundColor: '#f003',
 			alignItems: 'center',
 			justifyContent: 'center',

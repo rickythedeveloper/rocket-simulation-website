@@ -16,6 +16,9 @@ const DEFAULT_STATE: State = {
 	height: 0,
 };
 
+const ROCKET_SIZE = 250;
+const ROCKET_BOTTOM_FROM_VIEW_TOP = 500;
+
 export default class PilotView extends React.Component<Props, State> {
 	constructor(props: Props) {
 		super(props);
@@ -39,9 +42,13 @@ export default class PilotView extends React.Component<Props, State> {
 						width: '100%',
 					}}
 					cameraHeight={this.state.height}
+					rocketBottomY={ROCKET_BOTTOM_FROM_VIEW_TOP}
 				/>
 				<Rocket style={{
 					position: 'absolute',
+					width: `${ROCKET_SIZE}px`,
+					height: `${ROCKET_SIZE}px`,
+					top: `${ROCKET_BOTTOM_FROM_VIEW_TOP - ROCKET_SIZE}px`,
 				}}/>
 			</div>
 		);
