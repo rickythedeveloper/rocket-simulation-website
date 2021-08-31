@@ -16,7 +16,7 @@ interface State {
 const DEFAULT_STATE: State = {
 	rocketPosition: new Vector2D(0, EARTH_RADIUS),
 };
-const SIMULATION_DT = 1;
+const SIMULATION_DT = 0.05;
 
 export default class SimulatorScreen extends React.Component<Props, State> {
 
@@ -45,7 +45,7 @@ export default class SimulatorScreen extends React.Component<Props, State> {
 
 		const keyboardListener = new KeyboardStates();
 		keyboardListener.addKey('ArrowUp', () => {
-			rocket.unnaturalForce = new Vector2D(0, ROCKET_MASS * 10);
+			rocket.unnaturalForce = new Vector2D(0, ROCKET_MASS * 15);
 		}, () => {
 			rocket.unnaturalForce = undefined;
 		});
