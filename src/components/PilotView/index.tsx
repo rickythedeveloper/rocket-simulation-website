@@ -1,11 +1,12 @@
 import React, { CSSProperties } from 'react';
-import Rocket from './Rocket';
 import Background from './Background';
-import { EARTH_RADIUS } from '../../models/bodies';
-import Vector2D from '../../models/Vector2D';
+import { EARTH_RADIUS } from '../../models/bodies/constants';
+import RocketModel from '../../models/bodies/Rocket';
+import RocketElement from './Rocket';
+import FlightInfoDisplay from './FlightInfoDisplay';
 
 interface Props {
-	rocketPosition: Vector2D;
+	rocket: RocketModel;
 	style?: CSSProperties;
 }
 interface State {
@@ -26,7 +27,7 @@ export default class PilotView extends React.Component<Props, State> {
 	}
 
 	static getDerivedStateFromProps(props: Props) {
-		const height = props.rocketPosition.magnitude - EARTH_RADIUS;
+		const height = props.rocket.position.magnitude - EARTH_RADIUS;
 		return {
 			height: height,
 		};
@@ -44,14 +45,27 @@ export default class PilotView extends React.Component<Props, State> {
 					cameraHeight={this.state.height}
 					rocketBottomY={ROCKET_BOTTOM_FROM_VIEW_TOP}
 				/>
-				<Rocket style={{
+				<RocketElement style={{
 					position: 'absolute',
 					width: `${ROCKET_SIZE}px`,
 					height: `${ROCKET_SIZE}px`,
 					top: `${ROCKET_BOTTOM_FROM_VIEW_TOP - ROCKET_SIZE}px`,
 					left: `${50}%`,
 					transform: 'translate(-50%, 0)',
-				}}/>
+				}}>
+					<FlightInfoDisplay
+						speed={Math.round(this.props.rocket.speed.magnitude)}
+						height={Math.round(this.state.height)}
+						style={{
+							position: 'absolute',
+							width: '80px',
+							top: '50%',
+							left: '100%',
+							transform: 'translate(10px, -50%)',
+						}}
+					/>
+				</RocketElement>
+
 			</div>
 		);
 	}

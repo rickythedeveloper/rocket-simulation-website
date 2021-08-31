@@ -14,12 +14,15 @@ export default class Rocket extends React.Component<Props, State> {
 			justifyContent: 'center',
 			display: 'flex',
 			objectFit: 'contain',
-			overflow: 'hidden',
 			...this.props.style,
 		};
 		return (
 			<div className={'rocket'} style={rocketStyle}>
-				<img src={rocketImage}/>
+				<img src={rocketImage} style={{
+					maxWidth: '100%',
+					maxHeight: '100%',
+				}}/>
+				{this.props.children}
 			</div>
 		);
 	}

@@ -1,10 +1,12 @@
 import React, { CSSProperties } from 'react';
-import { EARTH_RADIUS, ROCKET_MASS } from '../models/bodies';
 import Vector2D from '../models/Vector2D';
 import PilotView from './PilotView';
 import Simulator from '../models/Simulator';
-import { earth, rocket } from '../models/bodies';
+import Earth from '../models/bodies/Earth';
+import Rocket from '../models/bodies/Rocket';
+import { EARTH_RADIUS, ROCKET_MASS } from '../models/bodies/constants';
 import KeyboardStates from '../utils/KeyboardStates';
+import GenericButton from './generic/GenericButton';
 
 interface Props {
 	style?: CSSProperties;
@@ -16,7 +18,7 @@ interface State {
 const DEFAULT_STATE: State = {
 	rocketPosition: new Vector2D(0, EARTH_RADIUS),
 };
-const SIMULATION_DT = 0.05;
+const SIMULATION_DT = 0.01;
 
 export default class SimulatorScreen extends React.Component<Props, State> {
 
@@ -24,11 +26,15 @@ export default class SimulatorScreen extends React.Component<Props, State> {
 
 	simulatorInterval?: NodeJS.Timer;
 
+	earth: Earth = new Earth();
+
+	rocket: Rocket = new Rocket();
+
 	componentDidMount() {
 		this.simulatorInterval = setInterval(() => {
 			this.simulator.rollForward(SIMULATION_DT);
 			this.setState({
-				rocketPosition: rocket.position,
+				rocketPosition: this.rocket.position,
 			});
 		}, SIMULATION_DT * 1000);
 	}
@@ -40,29 +46,40 @@ export default class SimulatorScreen extends React.Component<Props, State> {
 	constructor(props: Props) {
 		super(props);
 		this.simulator = new Simulator();
-		this.simulator.addBodies(earth, rocket);
+		this.simulator.setBodies(this.rocket, this.earth);
 		this.state = DEFAULT_STATE;
-		rocket.collisionHandler = () => {
-			if (rocket.speed.magnitude < 10) {
+		this.rocket.collisionHandler = () => {
+			if (this.rocket.speed.magnitude < 10) {
 				console.log('LANDED');
 			} else {
-				console.log('EXPLODE');
-				rocket.canMove = false;
+				console.log('EXPLODED');
+				this.rocket.canMove = false;
 			}
 		};
 
 		const keyboardListener = new KeyboardStates();
 		keyboardListener.addKey('ArrowUp', () => {
-			rocket.unnaturalForce = new Vector2D(0, ROCKET_MASS * 15);
+			this.rocket.unnaturalForce = new Vector2D(0, ROCKET_MASS * 15);
 		}, () => {
-			rocket.unnaturalForce = undefined;
+			this.rocket.unnaturalForce = undefined;
 		});
+	}
+
+	resetSimulation() {
+		this.rocket = new Rocket();
+		this.earth = new Earth();
+		this.simulator.setBodies(this.rocket, this.earth);
 	}
 
 	render() {
 		return (
 			<div>
-				<PilotView rocketPosition={this.state.rocketPosition}/>
+				<PilotView rocket={this.rocket}/>
+				<GenericButton onPress={() => {
+					this.resetSimulation();
+				}}>
+					Reset
+				</GenericButton>
 			</div>
 		);
 	}
