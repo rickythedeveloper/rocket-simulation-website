@@ -1,77 +1,118 @@
-import React from 'react';
-
-interface Props {
-
-}
-
-interface Position {
-	x: number;
-	y: number;
-}
+import React, { CSSProperties } from 'react';
+import Position, { angleOfPosition, getDistanceBetween } from '../utils/Position';
+import { randomNumberBetween } from '../utils';
 
 interface Size {
 	height: number;
 	width: number;
 }
 
+interface Props {
+	parentSize: Size;
+}
+
 interface State {
 	canvasScale: number;
 	canvasRotation: number;
-	canvasSize: Size;
-	labelPosition: Position;
+	canvasLeft: number;
+	canvasTop: number;
+	rocketPosition: Position;
 }
 
+const CANVAS_SIZE: Size = { height: 4000, width: 2000 };
+const CANVAS_CENTER_POINT: Position = { x: CANVAS_SIZE.width / 2, y: CANVAS_SIZE.height / 2 };
+const CANVAS_DEFAULT_STATE: State = {
+	canvasScale: 100 / CANVAS_SIZE.height,
+	canvasRotation: 0,
+	canvasLeft: -CANVAS_CENTER_POINT.x,
+	canvasTop: -CANVAS_CENTER_POINT.y,
+	rocketPosition: { x:0, y:0 },
+};
+
 export default class SimulatorCanvas extends React.Component<Props, State> {
-	readonly defaultState = { 
-		canvasScale: 1, 
-		canvasRotation: 0, 
-		canvasSize: { height: 500, width: 500 },
-		labelPosition: { x: 0, y: 0 }, 
-	};
 
 	componentDidMount() {
 		setInterval(() => {
-			this.setState(this.defaultState);
-		}, 5000);
-		setInterval(() => {
-			this.setState({
-				labelPosition: { x: this.state.labelPosition.x + 1, y:this.state.labelPosition.y + 1 },
-				canvasRotation: this.state.canvasRotation + 1,
-				canvasScale: this.state.canvasScale * 0.99,
-				canvasSize: { 
-					height: this.state.canvasSize.height * 1.01, 
-					width: this.state.canvasSize.width * 1.01, 
-				},
+			this.setRocketPosition({
+				x: randomNumberBetween(-CANVAS_SIZE.width / 2, CANVAS_SIZE.width / 2),
+				y: randomNumberBetween(-CANVAS_SIZE.height / 2, CANVAS_SIZE.height / 2),
 			});
-		}, 50);
+		}, 2000);
 	}
 
 	constructor(props: Props) {
 		super(props);
-		this.state = this.defaultState;
+		this.state = CANVAS_DEFAULT_STATE;
 	}
 
-	moveLabel(x: number, y: number) {
-		this.setState({ labelPosition: { x: x, y: y } });
+	setRocketPosition(position: Position) {
+		const distanceToCenter = getDistanceBetween(position, { x: 0, y: 0 });
+		const canvasRotation = angleOfPosition(position) * 180 / Math.PI - 90;
+		const canvasScale = 100 / CANVAS_SIZE.height; // TODO set scale based on speed
+		const top = - CANVAS_CENTER_POINT.y + canvasScale * distanceToCenter + this.props.parentSize.height / 2;
+		const left = - CANVAS_CENTER_POINT.x + this.props.parentSize.width / 2;
+
+		this.setState({
+			rocketPosition: position,
+			canvasLeft: left,
+			canvasTop: top,
+			canvasRotation: canvasRotation,
+			canvasScale: canvasScale,
+		});
 	}
 
 	render() {
 		const canvasTransform = `
 		scale(${this.state.canvasScale}, ${this.state.canvasScale}) 
 		rotateZ(${this.state.canvasRotation}deg)`;
-		
+
+		const canvasStyle: CSSProperties = {
+			position: 'absolute',
+			transform: canvasTransform,
+			height: `${CANVAS_SIZE.height}px`,
+			width: `${CANVAS_SIZE.width}px`,
+			top: `${this.state.canvasTop}px`,
+			left: `${this.state.canvasLeft}px`,
+			backgroundColor:'red',
+		};
+
+		const blobSize = CANVAS_SIZE.height / 10;
+
+		const rocketStyle: CSSProperties = {
+			position: 'absolute',
+			height: `${blobSize}px`,
+			width: `${blobSize}px`,
+			left: `${CANVAS_CENTER_POINT.x + this.state.rocketPosition.x - blobSize / 2}px`,
+			bottom: `${CANVAS_CENTER_POINT.y + this.state.rocketPosition.y - blobSize / 2}px`,
+			backgroundColor: 'black',
+		};
+
+		const centerStyle: CSSProperties = {
+			position: 'absolute',
+			height: `${blobSize}px`,
+			width: `${blobSize}px`,
+			left: `${CANVAS_SIZE.width / 2 - blobSize / 2}px`,
+			top: `${CANVAS_SIZE.height / 2 - blobSize / 2}px`,
+			backgroundColor: 'blue',
+		};
+
+		const topLeftIndicatorStyle: CSSProperties = {
+			position: 'absolute',
+			height: `${blobSize}px`,
+			width: `${blobSize}px`,
+			top: 0,
+			left: 0,
+			backgroundColor: 'brown',
+		};
+
 		return (
-			<div className={'simulatorCanvas'} style={{
-				transform: canvasTransform,
-				height: `${this.state.canvasSize.height}px`,
-				width: `${this.state.canvasSize.width}px`,
-				backgroundColor:'red',
-			}}>
-				<h3 style={{ 
-					position: 'absolute', 
-					top: this.state.labelPosition.y, 
-					left: this.state.labelPosition.x, 
-				}}>HELLO</h3>
+			<div className={'simulatorCanvas'} style={canvasStyle}>
+				{/* Rocket */}
+				<div style={rocketStyle}/>
+				{/* Center-ish point */}
+				<div style={centerStyle}/>
+				{/* Top left corner indicator */}
+				<div style={topLeftIndicatorStyle}/>
 			</div>
 		);
 	}
