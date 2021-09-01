@@ -17,9 +17,9 @@ export default class Simulator {
 			for (let i = 0; i < this.bodies.length; i++) {
 				if (index === i) continue;
 				const otherBody = this.bodies[i];
-				const vectorToOtherBody = massiveBody.position.vectorTo(otherBody.position);
+				const vectorToOtherBody = massiveBody.state.position.vectorTo(otherBody.state.position);
 				const forceMagnitude =
-				GRAVITATIONAL_CONSTANT * massiveBody.mass * otherBody.mass
+				GRAVITATIONAL_CONSTANT * massiveBody.state.mass * otherBody.state.mass
 				/ vectorToOtherBody.magnitude ** 2;
 
 				const additionalForce = vectorToOtherBody.withMagnitude(forceMagnitude);
@@ -34,14 +34,11 @@ export default class Simulator {
 		const forces = this.calculateForces();
 		for (let index = 0; index < this.bodies.length; index++) {
 			const massiveBody = this.bodies[index];
-			const deltas = massiveBody.calculateDelta(dt, forces[index], 0);
-			if (deltas === null) continue;
-
-			const { positionDelta, speedDelta, directionDelta, angularVelocityDelta } = deltas;
-			const newPosition = Vector2D.sum(massiveBody.position, positionDelta);
-			const newSpeed = Vector2D.sum(massiveBody.speed, speedDelta);
-			const newDirection = massiveBody.direction + directionDelta;
-			const newAngularVelocity = massiveBody.angularVelocity + angularVelocityDelta;
+			const newState = massiveBody.getNewState(
+				dt,
+				Vector2D.sum(forces[index], massiveBody.additionalForce),
+				massiveBody.additionalTorque,
+			);
 
 			let willCollide = false;
 			for (let i = 0; i < this.bodies.length; i++) {
@@ -51,8 +48,8 @@ export default class Simulator {
 				if (otherBody.boundaryFunction === undefined) continue;
 
 				for (let j = 0; j < massiveBody.testPoints.length; j++) {
-					const testPoint = Vector2D.sum(newPosition, massiveBody.testPoints[j]);
-					const positionFromOtherBody = otherBody.position.vectorTo(testPoint);
+					const testPoint = Vector2D.sum(newState.position, massiveBody.testPoints[j]);
+					const positionFromOtherBody = otherBody.state.position.vectorTo(testPoint);
 					if (otherBody.boundaryFunction(positionFromOtherBody)) {
 						willCollide = true;
 						break;
@@ -63,10 +60,7 @@ export default class Simulator {
 			if (willCollide) {
 				if (massiveBody.collisionHandler) massiveBody.collisionHandler();
 			} else {
-				massiveBody.position = newPosition;
-				massiveBody.speed = newSpeed;
-				massiveBody.direction = newDirection;
-				massiveBody.angularVelocity = newAngularVelocity;
+				massiveBody.state = newState;
 			}
 		}
 	}
