@@ -11,10 +11,12 @@ interface Props {
 }
 interface State {
 	height: number;
+	rocketImageAngle: number;
 }
 
 const DEFAULT_STATE: State = {
 	height: 0,
+	rocketImageAngle: 0,
 };
 
 const ROCKET_SIZE = 100;
@@ -27,9 +29,11 @@ export default class PilotView extends React.Component<Props, State> {
 	}
 
 	static getDerivedStateFromProps(props: Props) {
-		const height = props.rocket.position.magnitude - EARTH_RADIUS;
+		const height = props.rocket.state.position.magnitude - EARTH_RADIUS;
+		const rocketAngularPositionDegrees = props.rocket.state.angularPosition * 180 / Math.PI;
 		return {
 			height: height,
+			rocketImageAngle: 90 - rocketAngularPositionDegrees,
 		};
 	}
 
@@ -51,14 +55,17 @@ export default class PilotView extends React.Component<Props, State> {
 					height: `${ROCKET_SIZE}px`,
 					top: `${ROCKET_BOTTOM_FROM_VIEW_TOP - ROCKET_SIZE}px`,
 					left: `${50}%`,
-					transform: 'translate(-50%, 0)',
+					transform: `
+						translate(-50%, 0) 
+						rotateZ(${this.state.rocketImageAngle}deg)
+					`,
 				}}>
 					<FlightInfoDisplay
-						speed={Math.round(this.props.rocket.speed.magnitude)}
+						speed={Math.round(this.props.rocket.state.velocity.magnitude)}
 						height={Math.round(this.state.height)}
 						style={{
 							position: 'absolute',
-							width: '80px',
+							width: '120px',
 							top: '50%',
 							left: '100%',
 							transform: 'translate(10px, -50%)',

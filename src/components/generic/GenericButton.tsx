@@ -20,8 +20,6 @@ export default class GenericButton extends React.Component<Props, State> {
 			backgroundColor: 'red',
 			margin: 'auto',
 			position: 'absolute',
-			top: 0,
-			left: 0,
 			...this.props.style,
 		};
 		return (
