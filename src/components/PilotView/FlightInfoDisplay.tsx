@@ -1,8 +1,10 @@
 import React, { CSSProperties } from 'react';
+import Vector2D from '../../models/Vector2D';
 
 interface Props {
 	speed: number;
 	height: number;
+	rocketPosition: Vector2D;
 	style?: CSSProperties;
 }
 interface State {}
@@ -21,9 +23,13 @@ export default class FlightInfoDisplay extends React.Component<Props, State> {
 			padding: 10,
 			...this.props.style,
 		};
-		const infoString = `Speed: ${this.props.speed}\nheight: ${this.props.height}`;
 		return (
-			<div style={containerStyle}>{infoString}</div>
+			<div style={containerStyle}>
+				<div>{`Speed: ${this.props.speed}`}</div>
+				<div>{`Height: ${this.props.height}`}</div>
+				<div>{`x: ${Math.round(this.props.rocketPosition.x)}`}</div>
+				<div>{`y: ${Math.round(this.props.rocketPosition.y)}`}</div>
+			</div>
 		);
 	}
 }

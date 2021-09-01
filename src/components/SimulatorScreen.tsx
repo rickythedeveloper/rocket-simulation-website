@@ -70,8 +70,8 @@ export default class SimulatorScreen extends React.Component<Props, State> {
 		const keyboardListener = new KeyboardStates();
 		keyboardListener.addKey(
 			'ArrowUp',
-			() => { this.rocket.additionalForce = new Vector2D(0, ROCKET_MASS * 15); },
-			() => { this.rocket.additionalForce = Vector2D.zero(); },
+			() => { this.rocket.thrustStrength = 1; },
+			() => { this.rocket.thrustStrength = 0; },
 		);
 		keyboardListener.addKey(
 			'ArrowLeft',

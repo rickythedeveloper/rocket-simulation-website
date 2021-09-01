@@ -6,7 +6,11 @@ enum KeyState {
 export default class KeyboardStates {
 	keyStates: { [key: string]: KeyState } = {};
 
-	addKey(key: string, downCallback?: (event: KeyboardEvent) => void, upCallback?: (event: KeyboardEvent) =>void) {
+	addKey(
+		key: string, downCallback?: (event: KeyboardEvent) => void,
+		upCallback?: (event: KeyboardEvent) => void,
+		holdCallback?: (event: KeyboardEvent) => void,
+	) {
 		if (key in Object.keys(this.keyStates)) return;
 		this.keyStates[key] = KeyState.up;
 
@@ -15,6 +19,8 @@ export default class KeyboardStates {
 				if (this.keyStates[key] !== KeyState.down) {
 					this.keyStates[key] = KeyState.down;
 					if (downCallback) downCallback(event);
+				} else {
+					if (holdCallback) holdCallback(event);
 				}
 			}
 		});

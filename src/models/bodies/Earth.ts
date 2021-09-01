@@ -3,6 +3,8 @@ import Vector2D from '../Vector2D';
 import { EARTH_MASS, EARTH_RADIUS } from './constants';
 
 export default class Earth extends Body {
+	get additionalForce() { return Vector2D.zero(); }
+
 	constructor() {
 		super();
 		this.state.mass = EARTH_MASS;

@@ -63,6 +63,7 @@ export default class PilotView extends React.Component<Props, State> {
 					<FlightInfoDisplay
 						speed={Math.round(this.props.rocket.state.velocity.magnitude)}
 						height={Math.round(this.state.height)}
+						rocketPosition={this.props.rocket.state.position}
 						style={{
 							position: 'absolute',
 							width: '120px',

@@ -9,7 +9,7 @@ interface BodyState {
 	angularVelocity: number;
 }
 
-export default class Body {
+export default abstract class Body {
 	state: BodyState = {
 		mass: 1000,
 		angularMomentOfInertia: 1000,
@@ -23,7 +23,7 @@ export default class Body {
 
 	testPoints: Vector2D[] = [];
 
-	additionalForce: Vector2D = Vector2D.zero();
+	abstract get additionalForce(): Vector2D;
 
 	additionalTorque: number = 0;
 
