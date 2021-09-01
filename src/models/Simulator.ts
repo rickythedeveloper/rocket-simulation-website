@@ -34,12 +34,14 @@ export default class Simulator {
 		const forces = this.calculateForces();
 		for (let index = 0; index < this.bodies.length; index++) {
 			const massiveBody = this.bodies[index];
-			const deltas = massiveBody.calculateDelta(dt, forces[index]);
+			const deltas = massiveBody.calculateDelta(dt, forces[index], 0);
 			if (deltas === null) continue;
 
-			const { positionDelta, speedDelta } = deltas;
+			const { positionDelta, speedDelta, directionDelta, angularVelocityDelta } = deltas;
 			const newPosition = Vector2D.sum(massiveBody.position, positionDelta);
 			const newSpeed = Vector2D.sum(massiveBody.speed, speedDelta);
+			const newDirection = massiveBody.direction + directionDelta;
+			const newAngularVelocity = massiveBody.angularVelocity + angularVelocityDelta;
 
 			let willCollide = false;
 			for (let i = 0; i < this.bodies.length; i++) {
@@ -63,6 +65,8 @@ export default class Simulator {
 			} else {
 				massiveBody.position = newPosition;
 				massiveBody.speed = newSpeed;
+				massiveBody.direction = newDirection;
+				massiveBody.angularVelocity = newAngularVelocity;
 			}
 		}
 	}

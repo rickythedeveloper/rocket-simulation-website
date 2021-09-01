@@ -5,7 +5,13 @@ import { ROCKET_MASS, ROCKET_SIZE } from '../bodies/constants';
 
 export default class Rocket extends Body {
 	constructor() {
-		super(ROCKET_MASS, new Vector2D(0, EARTH_RADIUS + 500));
+		super();
+		this.mass = ROCKET_MASS;
+		this.anglularMomentInertia = 10 ** 8;
+		this.position = new Vector2D(0, EARTH_RADIUS + 500);
+		this.speed = Vector2D.zero();
+		this.direction = Math.PI / 2;
+
 		this.boundaryFunction = (offset: Vector2D) => {
 			return offset.x > -ROCKET_SIZE / 2 && offset.x < ROCKET_SIZE / 2
 			&& offset.y > -ROCKET_SIZE / 2 && offset.y < ROCKET_SIZE / 2;

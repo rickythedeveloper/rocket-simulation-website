@@ -51,6 +51,7 @@ export default class SimulatorScreen extends React.Component<Props, State> {
 		this.rocket.collisionHandler = () => {
 			if (this.rocket.speed.magnitude < 10) {
 				console.log('LANDED');
+				this.rocket.speed = Vector2D.zero();
 			} else {
 				console.log('EXPLODED');
 				this.rocket.canMove = false;
@@ -62,6 +63,16 @@ export default class SimulatorScreen extends React.Component<Props, State> {
 			this.rocket.unnaturalForce = new Vector2D(0, ROCKET_MASS * 15);
 		}, () => {
 			this.rocket.unnaturalForce = undefined;
+		});
+		keyboardListener.addKey('ArrowLeft', () => {
+			this.rocket.unnaturalTorque = 10 ** 7;
+		}, () => {
+			this.rocket.unnaturalTorque = 0;
+		});
+		keyboardListener.addKey('ArrowRight', () => {
+			this.rocket.unnaturalTorque = - (10 ** 7);
+		}, () => {
+			this.rocket.unnaturalTorque = 0;
 		});
 	}
 
