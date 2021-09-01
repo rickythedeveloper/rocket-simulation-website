@@ -4,6 +4,7 @@ import { EARTH_RADIUS } from '../../models/bodies/constants';
 import RocketModel from '../../models/bodies/Rocket';
 import RocketElement from './Rocket';
 import FlightInfoDisplay from './FlightInfoDisplay';
+import VelocityIndicator from './VelocityIndicator';
 
 interface Props {
 	rocket: RocketModel;
@@ -70,6 +71,18 @@ export default class PilotView extends React.Component<Props, State> {
 							top: '50%',
 							left: '100%',
 							transform: 'translate(10px, -50%)',
+						}}
+					/>
+					<VelocityIndicator
+						arrowInnerRadius={80}
+						arrowOuterRadius={130}
+						angularPosition={
+							this.props.rocket.state.velocity.angle
+							- this.props.rocket.state.angularPosition
+							+ Math.PI / 2
+						}
+						style={{
+							position: 'absolute',
 						}}
 					/>
 				</RocketElement>

@@ -1,4 +1,4 @@
-import Position, { getDistanceBetween } from '../utils/Position';
+import Position, { angleOfPosition, getDistanceBetween } from '../utils/Position';
 
 export default class Vector2D implements Position {
 	get magnitude() {return getDistanceBetween({ x:0, y:0 }, this);}
@@ -7,6 +7,8 @@ export default class Vector2D implements Position {
 		const magnitude = this.magnitude;
 		return new Vector2D(this.x / magnitude, this.y / magnitude);
 	}
+
+	get angle(): number { return angleOfPosition(this); }
 
 	constructor(public x: number, public y: number) {}
 
