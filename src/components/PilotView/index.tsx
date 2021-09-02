@@ -5,6 +5,8 @@ import RocketModel from '../../models/bodies/Rocket';
 import RocketElement from './Rocket';
 import FlightInfoDisplay from './FlightInfoDisplay';
 import VelocityIndicator from './VelocityIndicator';
+import Particles from '../generic/Particles';
+import Position from '../../utils/Position';
 
 interface Props {
 	rocket: RocketModel;
@@ -85,6 +87,12 @@ export default class PilotView extends React.Component<Props, State> {
 							position: 'absolute',
 						}}
 					/>
+					<Particles style={{ position: 'absolute', bottom: 0, left: 0 }} config={{
+						numberOfParticles: 10,
+						particleDuration: 5,
+						generateParticleComponent: () => <div>FIRE</div>,
+						updatePosition: (pos: Position, dt: number) => {return { x: pos.x, y: pos.y + dt * 10 };},
+					}}/>
 				</RocketElement>
 
 			</div>
