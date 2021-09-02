@@ -89,9 +89,15 @@ export default class PilotView extends React.Component<Props, State> {
 					/>
 					<Particles style={{ position: 'absolute', bottom: 0, left: 0 }} config={{
 						numberOfParticles: 10,
-						particleDuration: 5,
-						generateParticleComponent: () => <div>FIRE</div>,
+						particleDurationEstimate: 5,
+						generateParticleComponent: (time: number) => {
+							if (time < 3 || (Math.random() < 0.99)) {
+								return <div style={{ opacity: 1 - time / 5 }}>FIRE</div>;
+							}
+							return null;
+						},
 						updatePosition: (pos: Position, dt: number) => {return { x: pos.x, y: pos.y + dt * 10 };},
+						initialPosition: () => {return { x: Math.random() * 50, y: Math.random() * 50 };},
 					}}/>
 				</RocketElement>
 
