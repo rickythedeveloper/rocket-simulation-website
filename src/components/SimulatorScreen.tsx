@@ -70,20 +70,30 @@ export default class SimulatorScreen extends React.Component<Props, State> {
 		const keyboardListener = new KeyboardStates();
 		keyboardListener.addKey(
 			'ArrowUp',
-			() => { this.rocket.thrustStrength = 1; },
-			() => { this.rocket.thrustStrength = 0; },
+			() => { this.setFullThrust(); },
+			() => { this.setNoThrust(); },
 		);
 		keyboardListener.addKey(
 			'ArrowLeft',
-			() => { this.rocket.additionalTorque = 10 ** 7; },
-			() => { this.rocket.additionalTorque = 0; },
+			() => { this.setTorqueAnticlockwise(); },
+			() => { this.setNoTorque(); },
 		);
 		keyboardListener.addKey(
 			'ArrowRight',
-			() => { this.rocket.additionalTorque = - (10 ** 7); },
-			() => { this.rocket.additionalTorque = 0; },
+			() => { this.setTorqueClockwise(); },
+			() => { this.setNoTorque(); },
 		);
 	}
+
+	setFullThrust() { this.rocket.thrustStrength = 1; }
+
+	setNoThrust() { this.rocket.thrustStrength = 0; }
+
+	setTorqueAnticlockwise() { this.rocket.additionalTorque = 10 ** 7; }
+
+	setTorqueClockwise() { this.rocket.additionalTorque = - (10 ** 7); }
+
+	setNoTorque() {this.rocket.additionalTorque = 0; }
 
 	resetSimulation() {
 		this.rocket = new Rocket();
@@ -96,21 +106,57 @@ export default class SimulatorScreen extends React.Component<Props, State> {
 	}
 
 	render() {
+		const simulationCoreButtonsContainer: CSSProperties = {
+			top: '10px',
+			left: '10px',
+		};
+		const arrowButtonsContainer: CSSProperties = {
+			bottom: '10px',
+			right: '10px',
+		};
+		const buttonsContainer: CSSProperties = {
+			position: 'absolute',
+			display: 'flex',
+			flexDirection: 'row',
+			gap: '10px',
+		};
 		return (
 			<div>
 				<PilotView rocket={this.rocket}/>
-				<GenericButton style={{
-					top: 0,
-					left: 0,
-				}} onPress={() => { this.resetSimulation(); }}>
+				<div style={{ ...buttonsContainer, ...simulationCoreButtonsContainer }}>
+					<GenericButton style={{
+						top: 0,
+						left: 0,
+					}} onClick={() => { this.resetSimulation(); }}>
 					Reset
-				</GenericButton>
-				<GenericButton style={{
-					top: 0,
-					left: 100,
-				}} onPress={() => { this.pauseSimulation(); }}>
-					{this.state.simulationIsRunning ? 'Pause' : 'Resume'}
-				</GenericButton>
+					</GenericButton>
+					<GenericButton style={{
+						top: 0,
+						left: 100,
+					}} onClick={() => { this.pauseSimulation(); }}>
+						{this.state.simulationIsRunning ? 'Pause' : 'Resume'}
+					</GenericButton>
+				</div>
+				<div style={{ ...buttonsContainer, ...arrowButtonsContainer }}>
+					<GenericButton
+						onTouchStart={this.setTorqueAnticlockwise.bind(this)}
+						onTouchEnd={this.setNoTorque.bind(this)}
+					>
+						Left
+					</GenericButton>
+					<GenericButton
+						onTouchStart={this.setFullThrust.bind(this)}
+						onTouchEnd={this.setNoThrust.bind(this)}
+					>
+						Thrust
+					</GenericButton>
+					<GenericButton
+						onTouchStart={this.setTorqueClockwise.bind(this)}
+						onTouchEnd={this.setNoTorque.bind(this)}
+					>
+						Right
+					</GenericButton>
+				</div>
 			</div>
 		);
 	}

@@ -5,6 +5,10 @@
 body
 	position: fixed
 	@include takeUpParent
+	-webkit-user-select: none
+	-moz-user-select: none
+	-ms-user-select: none
+	user-select: none
 
 	#root
 		@include takeUpParent
@@ -16,5 +20,4 @@ body
 				@include takeUpParent
 
 				.simulatorScreen
-					// @include takeUpParent
 					background-color: yellow
