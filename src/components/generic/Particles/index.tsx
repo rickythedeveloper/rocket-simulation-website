@@ -10,7 +10,7 @@ export interface ParticlesConfig {
 	numberOfParticles: number;
 	particleDurationEstimate: number;
 	existenceFunction: (time: number) => number;
-	generateParticleComponent: (time: number) => React.ReactElement<ParticleProps> | null;
+	generateParticleComponent: (time: number) => React.ReactElement<ParticleProps>;
 	updatePosition: (position: Position, dt: number) => Position;
 	initialPosition: () => Position;
 }
@@ -54,10 +54,29 @@ export default class Particles extends React.Component<Props, State> {
 	}
 
 	rollForward() {
+		this.updateMissingIndices();
 		this.cleanParticleStates();
 		this.addParticlesStates();
 		this.updateParticleStates();
 		this.updateParticles();
+	}
+
+	/**
+	 * Update missing indices based on the existence function
+	 */
+	updateMissingIndices() {
+		const missingIndices: number[] = [];
+		this.state.particleStates.forEach((state, index) => {
+			const currentProb = this.props.config.existenceFunction(state.time);
+			const nextProb = this.props.config.existenceFunction(state.time + PARTICLE_UPDATE_INTERVAL);
+			const deathProb = 1 - nextProb / currentProb;
+			if (Math.random() < deathProb) {
+				missingIndices.push(index);
+			}
+		});
+		this.setState({
+			missingIndices: missingIndices,
+		});
 	}
 
 	/**
@@ -94,9 +113,6 @@ export default class Particles extends React.Component<Props, State> {
 				time: 0,
 			});
 		}
-		if (additionalParticleStates.length > 0) {
-			console.log('Added ', additionalParticleStates.length, 'particle states');
-		}
 		this.setState((prev) => {
 			return {
 				particleStates: prev.particleStates.concat(additionalParticleStates),
@@ -126,6 +142,13 @@ export default class Particles extends React.Component<Props, State> {
 		);
 	}
 
+	findIndexOfParticleState(id: number) {
+		for (let i = 0; i < this.state.particleStates.length; i++) {
+			if (this.state.particleStates[i].id === id) return i;
+		}
+		throw new Error(`Could not find particle state with id ${id}`);
+	}
+
 	/**
 	 * Given a list of particle states, regenerate the particles
 	 * and save particles and missing indices.
@@ -135,8 +158,7 @@ export default class Particles extends React.Component<Props, State> {
 		const missingIndices: number[] = [];
 		this.state.particleStates.forEach((particleState, index) => {
 			const particle = this.generateParticle(particleState);
-			if (particle === null) missingIndices.push(index);
-			else particles.push(particle);
+			particles.push(particle);
 		});
 
 		this.setState({
@@ -151,9 +173,8 @@ export default class Particles extends React.Component<Props, State> {
 	 * @param time
 	 * @returns
 	 */
-	generateParticle(particleState: ParticleState): JSX.Element | null {
+	generateParticle(particleState: ParticleState): JSX.Element {
 		const particle = this.props.config.generateParticleComponent(particleState.time);
-		if (particle === null) return null;
 
 		return (
 			<div
