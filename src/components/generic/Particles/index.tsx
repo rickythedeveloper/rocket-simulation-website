@@ -100,14 +100,11 @@ export default class Particles extends React.Component<Props, State> {
 		const missingCount = target - current;
 		const estimate =
 			this.props.config.numberOfParticles
-			* PARTICLE_UPDATE_INTERVAL
-			/ this.props.config.particleDurationEstimate;
-
-		const generationProb = missingCount / estimate;
+			* (PARTICLE_UPDATE_INTERVAL / this.props.config.particleDurationEstimate);
 
 		const additionalParticleStates: ParticleState[] = [];
-		for (let i = 0; i < missingCount; i++) {
-			if (Math.random() < generationProb) additionalParticleStates.push({
+		for (let i = 0; i < Math.min(missingCount, estimate); i++) {
+			additionalParticleStates.push({
 				id: Math.random(),
 				position: this.props.config.initialPosition(),
 				time: 0,
