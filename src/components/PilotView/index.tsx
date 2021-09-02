@@ -24,6 +24,7 @@ const DEFAULT_STATE: State = {
 
 const ROCKET_SIZE = 100;
 const ROCKET_BOTTOM_FROM_VIEW_TOP = 500;
+const ROCKET_FUEL_DURATION = 1500;
 
 export default class PilotView extends React.Component<Props, State> {
 	constructor(props: Props) {
@@ -88,16 +89,16 @@ export default class PilotView extends React.Component<Props, State> {
 						}}
 					/>
 					<Particles style={{ position: 'absolute', bottom: 0, left: 0 }} config={{
-						numberOfParticles: 100,
-						particleDurationEstimate: 3000,
+						numberOfParticles: this.props.rocket.thrustStrength * 200,
+						particleDurationEstimate: ROCKET_FUEL_DURATION,
 						existenceFunction: (time: number) => {
- 							return (3000 - time) / 3000;
+ 							return (ROCKET_FUEL_DURATION - time) / ROCKET_FUEL_DURATION;
 						},
 						generateParticleComponent: (time: number) => (
-							<div style={{ opacity: 1 - time / 3000 }}>FIRE</div>
+							<div style={{ opacity: 1 - time / ROCKET_FUEL_DURATION }}>A</div>
 						),
-						updatePosition: (pos: Position, dt: number) => {return { x: pos.x, y: pos.y + dt * 0.03 };},
-						initialPosition: () => {return { x: Math.random() * 100, y: Math.random() * 1 };},
+						updatePosition: (pos: Position, dt: number) => {return { x: pos.x, y: pos.y + dt * 0.1 };},
+						initialPosition: () => {return { x: Math.random() * ROCKET_SIZE, y: Math.random() * 10 };},
 					}}/>
 				</RocketElement>
 
