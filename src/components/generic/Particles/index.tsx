@@ -9,6 +9,7 @@ interface ParticleProps {
 export interface ParticlesConfig {
 	numberOfParticles: number;
 	particleDurationEstimate: number;
+	existenceFunction: (time: number) => number;
 	generateParticleComponent: (time: number) => React.ReactElement<ParticleProps> | null;
 	updatePosition: (position: Position, dt: number) => Position;
 	initialPosition: () => Position;
@@ -30,7 +31,7 @@ interface State {
 	missingIndices: number[];
 }
 
-const PARTICLE_UPDATE_INTERVAL = 10;
+const PARTICLE_UPDATE_INTERVAL = 10; // in millis
 
 export default class Particles extends React.Component<Props, State> {
 	particleInterval?: NodeJS.Timer;
@@ -80,7 +81,7 @@ export default class Particles extends React.Component<Props, State> {
 		const missingCount = target - current;
 		const estimate =
 			this.props.config.numberOfParticles
-			* (PARTICLE_UPDATE_INTERVAL / 1000)
+			* PARTICLE_UPDATE_INTERVAL
 			/ this.props.config.particleDurationEstimate;
 
 		const generationProb = missingCount / estimate;
@@ -115,9 +116,9 @@ export default class Particles extends React.Component<Props, State> {
 							id: particleState.id,
 							position: this.props.config.updatePosition(
 								particleState.position,
-								PARTICLE_UPDATE_INTERVAL / 1000,
+								PARTICLE_UPDATE_INTERVAL,
 							),
-							time: particleState.time + PARTICLE_UPDATE_INTERVAL / 1000,
+							time: particleState.time + PARTICLE_UPDATE_INTERVAL,
 						};
 					}),
 				};
