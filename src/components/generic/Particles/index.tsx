@@ -153,7 +153,7 @@ export default class Particles extends React.Component<Props, State> {
 	updateParticles(): void {
 		const particles: JSX.Element[] = [];
 		const missingIndices: number[] = [];
-		this.state.particleStates.forEach((particleState, index) => {
+		this.state.particleStates.forEach((particleState) => {
 			const particle = this.generateParticle(particleState);
 			particles.push(particle);
 		});
