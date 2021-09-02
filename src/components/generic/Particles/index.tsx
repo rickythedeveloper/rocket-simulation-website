@@ -37,18 +37,8 @@ export default class Particles extends React.Component<Props, State> {
 
 	constructor(props: Props) {
 		super(props);
-		const initialPositions: Position[] = [];
-		for (let i = 0; i < this.props.config.numberOfParticles; i++) {
-			initialPositions.push(this.props.config.initialPosition());
-		}
 		this.state = {
-			particleStates: initialPositions.map(pos => {
-				return {
-					id: Math.random(),
-					position: pos,
-					time: 0,
-				};
-			}),
+			particleStates: [],
 			particles: [],
 			missingIndices: [],
 		};
