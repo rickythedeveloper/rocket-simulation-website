@@ -4,7 +4,7 @@ import PilotView from './PilotView';
 import Simulator from '../models/Simulator';
 import Earth from '../models/bodies/Earth';
 import Rocket from '../models/bodies/Rocket';
-import { EARTH_RADIUS, ROCKET_MASS } from '../models/bodies/constants';
+import { EARTH_RADIUS } from '../models/bodies/constants';
 import KeyboardStates from '../utils/KeyboardStates';
 import GenericButton from './generic/GenericButton';
 
