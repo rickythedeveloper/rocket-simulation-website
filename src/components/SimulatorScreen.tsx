@@ -55,10 +55,8 @@ export default class SimulatorScreen extends React.Component<Props, State> {
 		this.state = DEFAULT_STATE;
 		this.rocket.collisionHandler = () => {
 			if (this.rocket.state.velocity.magnitude < 10) {
-				console.log('LANDED');
 				this.rocket.state.velocity = Vector2D.zero();
 			} else {
-				console.log('EXPLODED');
 				this.rocket.canMove = false;
 			}
 		};
