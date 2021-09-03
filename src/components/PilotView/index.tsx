@@ -31,6 +31,7 @@ const THRUST_PARTICLE_SPEED = 0.6; // 'Pixels' per millisecond
 const THRUST_PARTICLE_COUNT = 80;
 const THRUST_WIDTH = 20;
 const THRUST_MARGIN = 10;
+
 const thrustParticleUpdatePosition = (pos: Position, dt: number) => {
 	return { x: pos.x, y: pos.y + dt * THRUST_PARTICLE_SPEED };
 };
@@ -46,7 +47,7 @@ const thrustParticleExistenceFunction = (time: number) => {
 	return (THRUST_PARTICLE_DURATION - time) / THRUST_PARTICLE_DURATION;
 };
 const getThrustParticle = (time: number) => (
-	<ThrustParticle time={time} lifetime={THRUST_PARTICLE_DURATION}/>
+	<ThrustParticle lifecycle={time / THRUST_PARTICLE_DURATION}/>
 );
 const thrustParticleInitialPosition = () => {
 	return { x: Math.random() * THRUST_WIDTH, y: Math.random() * 10 };

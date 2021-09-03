@@ -1,16 +1,9 @@
 import React, { CSSProperties } from 'react';
 
 interface Props {
-	time: number;
-	lifetime: number;
+	lifecycle: number; // between 0 and 1
 	style?: CSSProperties;
 }
-interface State {
-	lifecycle: number; // between 0 and 1
-}
-const DEFAULT_STATE: State = {
-	lifecycle: 0,
-};
 
 const MAX_SIZE = 13;
 
@@ -24,19 +17,11 @@ function getColor(lifecycle: number): string {
 	return `rgba(255, ${gb}, ${gb})`;
 }
 
-export default class ThrustParticle extends React.Component<Props, State> {
-	constructor(props: Props) {
-		super(props);
-		this.state = DEFAULT_STATE;
-	}
-
-	static getDerivedStateFromProps(newProps: Props): Partial<State> {
-		return { lifecycle: newProps.time / newProps.lifetime };
-	}
+export default class ThrustParticle extends React.Component<Props> {
 
 	render() {
-		const size = getSize(this.state.lifecycle);
-		const backgroundColor = getColor(this.state.lifecycle);
+		const size = getSize(this.props.lifecycle);
+		const backgroundColor = getColor(this.props.lifecycle);
 		const containerStyle: CSSProperties = {
 			width: size,
 			height: size,
