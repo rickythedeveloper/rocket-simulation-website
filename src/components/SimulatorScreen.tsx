@@ -87,11 +87,11 @@ export default class SimulatorScreen extends React.Component<Props, State> {
 
 	setNoThrust() { this.rocket.thrustStrength = 0; }
 
-	setTorqueAnticlockwise() { this.rocket.additionalTorque = 10 ** 7; }
+	setTorqueAnticlockwise() { this.rocket.thrustDirection = - Math.PI / 10; }
 
-	setTorqueClockwise() { this.rocket.additionalTorque = - (10 ** 7); }
+	setTorqueClockwise() { this.rocket.thrustDirection = Math.PI / 10; }
 
-	setNoTorque() {this.rocket.additionalTorque = 0; }
+	setNoTorque() {this.rocket.thrustDirection = 0; }
 
 	resetSimulation() {
 		this.rocket = new Rocket();

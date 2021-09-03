@@ -5,6 +5,8 @@ import { EARTH_MASS, EARTH_RADIUS } from './constants';
 export default class Earth extends Body {
 	get additionalForce() { return Vector2D.zero(); }
 
+	get additionalTorque() { return 0; }
+
 	constructor() {
 		super();
 		this.state.mass = EARTH_MASS;
