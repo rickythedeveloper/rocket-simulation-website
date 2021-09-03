@@ -1,5 +1,5 @@
 import React, { CSSProperties } from 'react';
-import rightArrowImage from '../../assets/rightArrow.png';
+import rightArrowImage from '../../../assets/rightArrow.png';
 
 interface Props {
 	arrowInnerRadius: number;
