@@ -104,6 +104,10 @@ export default class SimulatorScreen extends React.Component<Props, State> {
 	}
 
 	render() {
+		const containerStyle: CSSProperties = {
+			width: '100%',
+			height: '100%',
+		};
 		const simulationCoreButtonsContainer: CSSProperties = {
 			top: '10px',
 			left: '10px',
@@ -119,7 +123,7 @@ export default class SimulatorScreen extends React.Component<Props, State> {
 			gap: '10px',
 		};
 		return (
-			<div>
+			<div className={'simulator-screen'} style={containerStyle}>
 				<PilotView rocket={this.rocket}/>
 				<div style={{ ...buttonsContainer, ...simulationCoreButtonsContainer }}>
 					<GenericButton style={{

@@ -1,5 +1,4 @@
 import React, { CSSProperties } from 'react';
-import Background from './Background';
 import { EARTH_RADIUS } from '../../models/bodies/constants';
 import RocketModel from '../../models/bodies/Rocket';
 import RocketElement from './Rocket';
@@ -19,7 +18,13 @@ const DEFAULT_STATE: State = {
 };
 
 const ROCKET_SIZE = 100;
-const ROCKET_BOTTOM_FROM_VIEW_TOP = 500;
+const MAX_HEIGHT_COLOR = 20000;
+
+function getLightStrength(height: number): number {
+	if (height < 0) return 1;
+	if (height > MAX_HEIGHT_COLOR) return 0;
+	return 1 - height / MAX_HEIGHT_COLOR;
+}
 
 export default class PilotView extends React.Component<Props, State> {
 	constructor(props: Props) {
@@ -37,31 +42,41 @@ export default class PilotView extends React.Component<Props, State> {
 	}
 
 	render() {
+		const lightStrength = getLightStrength(this.state.height);
+		const containerStyle: CSSProperties = {
+			backgroundColor: `rgba(
+				${lightStrength * 130},
+				${lightStrength * 200},
+				${lightStrength * 255},
+				1.0)
+			`,
+			width: '100%',
+			height: '100%',
+		};
+		const landStyle: CSSProperties = {
+			position: 'absolute',
+			backgroundColor: '#940',
+			top: '50%',
+			width: '100%',
+			height: '100%',
+			transform: `translate(0, ${ROCKET_SIZE / 2 + this.state.height}px)`,
+			borderTop: '5px solid black',
+		};
+		const rocketStyle: CSSProperties = {
+			position: 'absolute',
+			width: `${ROCKET_SIZE}px`,
+			height: `${ROCKET_SIZE}px`,
+			top: '50%',
+			left: '50%',
+			transform: `
+				translate(-50%, -50%) 
+				rotateZ(${this.state.rocketImageAngle}deg)
+			`,
+		};
 		return (
-			<div className={'pilot-view'}>
-				<Background
-					style={{
-						position: 'absolute',
-						height: '100%',
-						width: '100%',
-					}}
-					cameraHeight={this.state.height}
-					rocketBottomY={ROCKET_BOTTOM_FROM_VIEW_TOP}
-				/>
-				<RocketElement
-					rocket={this.props.rocket}
-					style={{
-						position: 'absolute',
-						width: `${ROCKET_SIZE}px`,
-						height: `${ROCKET_SIZE}px`,
-						top: `${ROCKET_BOTTOM_FROM_VIEW_TOP - ROCKET_SIZE}px`,
-						left: `${50}%`,
-						transform: `
-						translate(-50%, 0) 
-						rotateZ(${this.state.rocketImageAngle}deg)
-					`,
-					}}
-				/>
+			<div className={'pilot-view'} style={containerStyle}>
+				<div className={'land'} style={landStyle}/>
+				<RocketElement rocket={this.props.rocket} style={rocketStyle} />
 			</div>
 		);
 	}
