@@ -5,7 +5,7 @@ import RocketModel from '../../models/bodies/Rocket';
 import RocketElement from './Rocket';
 import FlightInfoDisplay from './FlightInfoDisplay';
 import VelocityIndicator from './VelocityIndicator';
-import Particles from '../generic/Particles';
+import Particles, { ParticlesConfig } from '../generic/Particles';
 import Position from '../../utils/Position';
 import ThrustParticle from './particles/ThrustParticle';
 
@@ -25,9 +25,38 @@ const DEFAULT_STATE: State = {
 
 const ROCKET_SIZE = 100;
 const ROCKET_BOTTOM_FROM_VIEW_TOP = 500;
-const ROCKET_FUEL_DURATION = 250;
-const ROCKET_FUEL_SPEED = 0.6; // 'Pixels' per millisecond
-const ROCKET_THRUST_PARTICLE_COUNT = 100;
+const THRUST_PARTICLE_DURATION = 250;
+const THRUST_PARTICLE_SPEED = 0.6; // 'Pixels' per millisecond
+const THRUST_PARTICLE_COUNT = 80;
+const THRUST_WIDTH = 20;
+const THRUST_MARGIN = 10;
+const thrustParticleUpdatePosition = (pos: Position, dt: number) => {
+	return { x: pos.x, y: pos.y + dt * THRUST_PARTICLE_SPEED };
+};
+const thrustParticlesCommonStyle: CSSProperties = {
+	position: 'absolute',
+	bottom: 0,
+	width: THRUST_WIDTH,
+};
+const thrustParticleExistenceFunction = (time: number) => {
+	return (THRUST_PARTICLE_DURATION - time) / THRUST_PARTICLE_DURATION;
+};
+const getThrustParticle = (time: number) => (
+	<ThrustParticle time={time} lifetime={THRUST_PARTICLE_DURATION}/>
+);
+const thrustParticleInitialPosition = () => {
+	return { x: Math.random() * THRUST_WIDTH, y: Math.random() * 10 };
+};
+const thrustParticlesConfig = (thrustStrength: number): ParticlesConfig => {
+	return {
+		numberOfParticles: thrustStrength * THRUST_PARTICLE_COUNT,
+		particleDurationEstimate: THRUST_PARTICLE_DURATION,
+		existenceFunction: thrustParticleExistenceFunction,
+		generateParticleComponent: getThrustParticle,
+		updatePosition: thrustParticleUpdatePosition,
+		initialPosition: thrustParticleInitialPosition,
+	};
+};
 
 export default class PilotView extends React.Component<Props, State> {
 	constructor(props: Props) {
@@ -91,20 +120,14 @@ export default class PilotView extends React.Component<Props, State> {
 							position: 'absolute',
 						}}
 					/>
-					<Particles style={{ position: 'absolute', bottom: 0, left: 0 }} config={{
-						numberOfParticles: this.props.rocket.thrustStrength * ROCKET_THRUST_PARTICLE_COUNT,
-						particleDurationEstimate: ROCKET_FUEL_DURATION,
-						existenceFunction: (time: number) => {
- 							return (ROCKET_FUEL_DURATION - time) / ROCKET_FUEL_DURATION;
-						},
-						generateParticleComponent: (time: number) => (
-							<ThrustParticle time={time} lifetime={ROCKET_FUEL_DURATION}/>
-						),
-						updatePosition: (pos: Position, dt: number) => {
-							return { x: pos.x, y: pos.y + dt * ROCKET_FUEL_SPEED };
-						},
-						initialPosition: () => {return { x: Math.random() * ROCKET_SIZE / 6, y: Math.random() * 10 };},
-					}}/>
+					<Particles style={{
+						...thrustParticlesCommonStyle,
+						left: THRUST_MARGIN,
+					}} config={thrustParticlesConfig(this.props.rocket.thrustStrength)}/>
+					<Particles style={{
+						...thrustParticlesCommonStyle,
+						right: THRUST_MARGIN,
+					}} config={thrustParticlesConfig(this.props.rocket.thrustStrength)}/>
 
 				</RocketElement>
 

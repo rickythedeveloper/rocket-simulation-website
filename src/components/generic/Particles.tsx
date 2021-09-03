@@ -171,6 +171,7 @@ export default class Particles extends React.Component<Props, State> {
 					position: 'absolute',
 					left: particleState.position.x,
 					top: particleState.position.y,
+					transform: 'translate(-50%, -50%)',
 				}}
 				key={particleState.id}
 			>

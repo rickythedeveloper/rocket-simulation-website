@@ -12,9 +12,10 @@ const DEFAULT_STATE: State = {
 	lifecycle: 0,
 };
 
+const MAX_SIZE = 13;
+
 function getSize(lifecycle: number): number {
-	const maxSize = 10;
-	return maxSize * (1 - lifecycle);
+	return MAX_SIZE * (1 - lifecycle);
 }
 
 function getColor(lifecycle: number): string {
