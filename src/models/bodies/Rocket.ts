@@ -14,9 +14,23 @@ export default class Rocket extends Body {
 	get thrustStrength(): number { return this._thrustStrength; }
 
 	set thrustStrength(value: number) {
-		if (value < 0) throw new Error('Thrust cannot be less than 0');
-		if (value > 1) throw new Error('Thrust cannot be greater than 1');
+		if (value < 0) throw new Error('thrustStrength cannot be less than 0');
+		if (value > 1) throw new Error('thrustStrength cannot be greater than 1');
 		this._thrustStrength = value;
+	}
+
+	get additionalTorque() {
+		return this.thrust.magnitude * 20 * (-Math.sin(this.thrustDirection));
+	}
+
+	_thrustDirection: number = 0;
+
+	get thrustDirection(): number { return this._thrustDirection; }
+
+	set thrustDirection(value: number) {
+		if (value < -Math.PI / 2) throw new Error('torqueStrength cannot be less than -pi/2');
+		if (value > Math.PI / 2) throw new Error('torqueStrength cannot be greater than pi/2');
+		this._thrustDirection = value;
 	}
 
 	get rocketDirection(): Vector2D {
@@ -28,7 +42,7 @@ export default class Rocket extends Body {
 	constructor() {
 		super();
 		this.state.mass = ROCKET_MASS;
-		this.state.angularMomentOfInertia = 10 ** 8;
+		this.state.angularMomentOfInertia = 10 ** 6;
 		this.state.position = new Vector2D(0, EARTH_RADIUS + 500);
 		this.state.velocity = Vector2D.zero();
 		this.state.angularPosition = Math.PI / 2;

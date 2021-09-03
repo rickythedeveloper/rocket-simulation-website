@@ -25,6 +25,7 @@ const DEFAULT_STATE: State = {
 
 const ROCKET_SIZE = 100;
 const ROCKET_BOTTOM_FROM_VIEW_TOP = 500;
+
 const THRUST_PARTICLE_DURATION = 250;
 const THRUST_PARTICLE_SPEED = 0.6; // 'Pixels' per millisecond
 const THRUST_PARTICLE_COUNT = 80;
@@ -33,10 +34,13 @@ const THRUST_MARGIN = 10;
 const thrustParticleUpdatePosition = (pos: Position, dt: number) => {
 	return { x: pos.x, y: pos.y + dt * THRUST_PARTICLE_SPEED };
 };
-const thrustParticlesCommonStyle: CSSProperties = {
-	position: 'absolute',
-	bottom: 0,
-	width: THRUST_WIDTH,
+const thrustParticlesCommonStyle = (thrustDirection: number): CSSProperties => {
+	return {
+		position: 'absolute',
+		bottom: 0,
+		width: THRUST_WIDTH,
+		transform: `rotateZ(${-thrustDirection * 180 / Math.PI}deg)`,
+	};
 };
 const thrustParticleExistenceFunction = (time: number) => {
 	return (THRUST_PARTICLE_DURATION - time) / THRUST_PARTICLE_DURATION;
@@ -121,14 +125,13 @@ export default class PilotView extends React.Component<Props, State> {
 						}}
 					/>
 					<Particles style={{
-						...thrustParticlesCommonStyle,
+						...thrustParticlesCommonStyle(this.props.rocket.thrustDirection),
 						left: THRUST_MARGIN,
 					}} config={thrustParticlesConfig(this.props.rocket.thrustStrength)}/>
 					<Particles style={{
-						...thrustParticlesCommonStyle,
+						...thrustParticlesCommonStyle(this.props.rocket.thrustDirection),
 						right: THRUST_MARGIN,
 					}} config={thrustParticlesConfig(this.props.rocket.thrustStrength)}/>
-
 				</RocketElement>
 
 			</div>

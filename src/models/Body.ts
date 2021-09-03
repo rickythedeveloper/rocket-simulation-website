@@ -25,7 +25,7 @@ export default abstract class Body {
 
 	abstract get additionalForce(): Vector2D;
 
-	additionalTorque: number = 0;
+	abstract get additionalTorque(): number;
 
 	collisionHandler?: () => void;
 
