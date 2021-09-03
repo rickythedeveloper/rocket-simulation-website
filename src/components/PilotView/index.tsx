@@ -7,6 +7,7 @@ import FlightInfoDisplay from './FlightInfoDisplay';
 import VelocityIndicator from './VelocityIndicator';
 import Particles from '../generic/Particles';
 import Position from '../../utils/Position';
+import ThrustParticle from './particles/ThrustParticle';
 
 interface Props {
 	rocket: RocketModel;
@@ -24,7 +25,9 @@ const DEFAULT_STATE: State = {
 
 const ROCKET_SIZE = 100;
 const ROCKET_BOTTOM_FROM_VIEW_TOP = 500;
-const ROCKET_FUEL_DURATION = 1500;
+const ROCKET_FUEL_DURATION = 250;
+const ROCKET_FUEL_SPEED = 0.6; // 'Pixels' per millisecond
+const ROCKET_THRUST_PARTICLE_COUNT = 100;
 
 export default class PilotView extends React.Component<Props, State> {
 	constructor(props: Props) {
@@ -89,17 +92,20 @@ export default class PilotView extends React.Component<Props, State> {
 						}}
 					/>
 					<Particles style={{ position: 'absolute', bottom: 0, left: 0 }} config={{
-						numberOfParticles: this.props.rocket.thrustStrength * 200,
+						numberOfParticles: this.props.rocket.thrustStrength * ROCKET_THRUST_PARTICLE_COUNT,
 						particleDurationEstimate: ROCKET_FUEL_DURATION,
 						existenceFunction: (time: number) => {
  							return (ROCKET_FUEL_DURATION - time) / ROCKET_FUEL_DURATION;
 						},
 						generateParticleComponent: (time: number) => (
-							<div style={{ opacity: 1 - time / ROCKET_FUEL_DURATION }}>A</div>
+							<ThrustParticle time={time} lifetime={ROCKET_FUEL_DURATION}/>
 						),
-						updatePosition: (pos: Position, dt: number) => {return { x: pos.x, y: pos.y + dt * 0.1 };},
-						initialPosition: () => {return { x: Math.random() * ROCKET_SIZE, y: Math.random() * 10 };},
+						updatePosition: (pos: Position, dt: number) => {
+							return { x: pos.x, y: pos.y + dt * ROCKET_FUEL_SPEED };
+						},
+						initialPosition: () => {return { x: Math.random() * ROCKET_SIZE / 6, y: Math.random() * 10 };},
 					}}/>
+
 				</RocketElement>
 
 			</div>

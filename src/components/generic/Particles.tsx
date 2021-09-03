@@ -1,16 +1,12 @@
 import React, { CSSProperties } from 'react';
-import Position from '../../../utils/Position';
-import { arrayWithRemovedIndices } from '../../../utils/index';
-
-interface ParticleProps {
-	style: CSSProperties;
-}
+import Position from '../../utils/Position';
+import { arrayWithRemovedIndices } from '../../utils/index';
 
 export interface ParticlesConfig {
 	numberOfParticles: number;
 	particleDurationEstimate: number;
 	existenceFunction: (time: number) => number;
-	generateParticleComponent: (time: number) => React.ReactElement<ParticleProps>;
+	generateParticleComponent: (time: number) => React.ReactElement;
 	updatePosition: (position: Position, dt: number) => Position;
 	initialPosition: () => Position;
 }
@@ -31,7 +27,7 @@ interface State {
 	missingIndices: number[];
 }
 
-const PARTICLE_UPDATE_INTERVAL = 10; // in millis
+const PARTICLE_UPDATE_INTERVAL = 30; // in millis
 
 export default class Particles extends React.Component<Props, State> {
 	particleInterval?: NodeJS.Timer;
@@ -151,16 +147,12 @@ export default class Particles extends React.Component<Props, State> {
 	 * and save particles and missing indices.
 	 */
 	updateParticles(): void {
-		const particles: JSX.Element[] = [];
-		const missingIndices: number[] = [];
-		this.state.particleStates.forEach((particleState) => {
-			const particle = this.generateParticle(particleState);
-			particles.push(particle);
-		});
+		const particles: JSX.Element[] = this.state.particleStates.map(
+			(particleState) => this.generateParticle(particleState),
+		);
 
 		this.setState({
 			particles: particles,
-			missingIndices: missingIndices,
 		});
 	}
 
