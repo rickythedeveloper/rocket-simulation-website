@@ -43,7 +43,7 @@ export default class Rocket extends Body {
 		super();
 		this.state.mass = ROCKET_MASS;
 		this.state.angularMomentOfInertia = 10 ** 6;
-		this.state.position = new Vector2D(0, EARTH_RADIUS + 500);
+		this.state.position = new Vector2D(0, EARTH_RADIUS + 100);
 		this.state.velocity = Vector2D.zero();
 		this.state.angularPosition = Math.PI / 2;
 

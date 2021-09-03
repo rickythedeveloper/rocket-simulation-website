@@ -9,7 +9,7 @@ interface Props {
 }
 interface State {
 	height: number;
-	rocketImageAngle: number;
+	rocketImageAngle: number; // angle by which we rotate the rocket in degrees. positive = clockwise.
 }
 
 const DEFAULT_STATE: State = {
@@ -34,10 +34,12 @@ export default class PilotView extends React.Component<Props, State> {
 
 	static getDerivedStateFromProps(props: Props) {
 		const height = props.rocket.state.position.magnitude - EARTH_RADIUS;
-		const rocketAngularPositionDegrees = props.rocket.state.angularPosition * 180 / Math.PI;
+		const rocketImageAngle =
+			(- props.rocket.state.angularPosition + props.rocket.state.position.angle)
+			* 180 / Math.PI;
 		return {
 			height: height,
-			rocketImageAngle: 90 - rocketAngularPositionDegrees,
+			rocketImageAngle: rocketImageAngle,
 		};
 	}
 

@@ -9,7 +9,7 @@ export function getDistanceBetween(a: Position, b: Position): number {
 
 export function angleOfPosition(position: Position): number {
 	if (position.x === 0) {
-		return position.y > 0 ? 0 : 180;
+		return position.y > 0 ? Math.PI / 2 : -Math.PI / 2;
 	}
 	const angleRadians = Math.atan(position.y / position.x);
 	if (position.x > 0) return angleRadians;
