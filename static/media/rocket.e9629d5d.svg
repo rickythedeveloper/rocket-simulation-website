@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="206px" height="1585px" viewBox="0 0 206 1585" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>rocket</title>
+    <defs>
+        <polyline id="path-1" points="27.3105 0 0 0 17.1153116 49.31955 0 98.6391 27.3105 98.6391"></polyline>
+        <polyline id="path-3" points="27.3105 0 0 0 17.1153116 49.31955 0 98.6391 27.3105 98.6391"></polyline>
+        <path d="M103,-0.13574071 C88.8549391,-0.13574071 57.4545733,47.4755921 36.8180469,105.979399 C23.0603626,144.981937 16.454347,188.455912 17,236.401324 L17,643.38907 C17.3101919,670.526238 18.6857446,690.07 21.126658,702.020354 C23.5675714,713.970707 28.7980343,726.76903 36.8180469,740.41532 L33.6998006,1265.81638 L-3.41060513e-13,1412.67295 L-3.41060513e-13,1485.72376 L103,1485.72376" id="path-5"></path>
+        <polyline id="path-7" points="27.3105 0 0 0 17.1153116 49.31955 0 98.6391 27.3105 98.6391"></polyline>
+        <polyline id="path-9" points="27.3105 0 0 0 17.1153116 49.31955 0 98.6391 27.3105 98.6391"></polyline>
+        <path d="M103,-0.13574071 C88.8549391,-0.13574071 57.4545733,47.4755921 36.8180469,105.979399 C23.0603626,144.981937 16.454347,188.455912 17,236.401324 L17,643.38907 C17.3101919,670.526238 18.6857446,690.07 21.126658,702.020354 C23.5675714,713.970707 28.7980343,726.76903 36.8180469,740.41532 L33.6998006,1265.81638 L-3.41060513e-13,1412.67295 L-3.41060513e-13,1485.72376 L103,1485.72376" id="path-11"></path>
+    </defs>
+    <g id="rocket" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group">
+            <g transform="translate(24.000000, 1486.000000)" id="thruster">
+                <g id="thruster-half">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <use id="Mask" fill="#9B9B9B" xlink:href="#path-1"></use>
+                    <rect id="Mask" fill="#4A4A4A" mask="url(#mask-2)" x="0" y="11.8881" width="27.3105" height="3.8556"></rect>
+                    <rect id="Mask-Copy-10" fill="#4A4A4A" mask="url(#mask-2)" x="0" y="3.213" width="27.3105" height="3.8556"></rect>
+                    <rect id="Mask-Copy" fill="#4A4A4A" mask="url(#mask-2)" x="0" y="20.5632" width="27.3105" height="3.8556"></rect>
+                    <rect id="Mask-Copy-2" fill="#4A4A4A" mask="url(#mask-2)" x="0" y="29.2383" width="27.3105" height="3.8556"></rect>
+                    <rect id="Mask-Copy-3" fill="#4A4A4A" mask="url(#mask-2)" x="0" y="37.9134" width="27.3105" height="3.8556"></rect>
+                    <rect id="Mask-Copy-4" fill="#4A4A4A" mask="url(#mask-2)" x="0" y="46.5885" width="27.3105" height="3.8556"></rect>
+                    <rect id="Mask-Copy-5" fill="#4A4A4A" mask="url(#mask-2)" x="0" y="55.2636" width="27.3105" height="3.8556"></rect>
+                    <rect id="Mask-Copy-6" fill="#4A4A4A" mask="url(#mask-2)" x="0" y="63.9387" width="27.3105" height="3.8556"></rect>
+                    <rect id="Mask-Copy-7" fill="#4A4A4A" mask="url(#mask-2)" x="0" y="72.6138" width="27.3105" height="3.8556"></rect>
+                    <rect id="Mask-Copy-8" fill="#4A4A4A" mask="url(#mask-2)" x="0" y="81.2889" width="27.3105" height="3.8556"></rect>
+                    <rect id="Mask-Copy-9" fill="#4A4A4A" mask="url(#mask-2)" x="0" y="89.964" width="27.3105" height="3.8556"></rect>
+                </g>
+                <g id="Group" transform="translate(26.989200, 0.000000)">
+                    <g id="thruster-half" transform="translate(13.655250, 49.319550) scale(-1, 1) translate(-13.655250, -49.319550) ">
+                        <mask id="mask-4" fill="white">
+                            <use xlink:href="#path-3"></use>
+                        </mask>
+                        <use id="Mask" fill="#9B9B9B" xlink:href="#path-3"></use>
+                        <rect id="Mask" fill="#4A4A4A" mask="url(#mask-4)" x="0" y="11.8881" width="27.3105" height="3.8556"></rect>
+                        <rect id="Mask-Copy-10" fill="#4A4A4A" mask="url(#mask-4)" x="0" y="3.213" width="27.3105" height="3.8556"></rect>
+                        <rect id="Mask-Copy" fill="#4A4A4A" mask="url(#mask-4)" x="0" y="20.5632" width="27.3105" height="3.8556"></rect>
+                        <rect id="Mask-Copy-2" fill="#4A4A4A" mask="url(#mask-4)" x="0" y="29.2383" width="27.3105" height="3.8556"></rect>
+                        <rect id="Mask-Copy-3" fill="#4A4A4A" mask="url(#mask-4)" x="0" y="37.9134" width="27.3105" height="3.8556"></rect>
+                        <rect id="Mask-Copy-4" fill="#4A4A4A" mask="url(#mask-4)" x="0" y="46.5885" width="27.3105" height="3.8556"></rect>
+                        <rect id="Mask-Copy-5" fill="#4A4A4A" mask="url(#mask-4)" x="0" y="55.2636" width="27.3105" height="3.8556"></rect>
+                        <rect id="Mask-Copy-6" fill="#4A4A4A" mask="url(#mask-4)" x="0" y="63.9387" width="27.3105" height="3.8556"></rect>
+                        <rect id="Mask-Copy-7" fill="#4A4A4A" mask="url(#mask-4)" x="0" y="72.6138" width="27.3105" height="3.8556"></rect>
+                        <rect id="Mask-Copy-8" fill="#4A4A4A" mask="url(#mask-4)" x="0" y="81.2889" width="27.3105" height="3.8556"></rect>
+                        <rect id="Mask-Copy-9" fill="#4A4A4A" mask="url(#mask-4)" x="0" y="89.964" width="27.3105" height="3.8556"></rect>
+                    </g>
+                </g>
+            </g>
+            <mask id="mask-6" fill="white">
+                <use xlink:href="#path-5"></use>
+            </mask>
+            <use id="Mask" stroke="#979797" fill="#D9D9D9" xlink:href="#path-5"></use>
+            <line x1="36.8180469" y1="740.41532" x2="103" y2="740.41532" id="Path-2" stroke="#979797" mask="url(#mask-6)"></line>
+            <line x1="33.6998006" y1="1265.81638" x2="103" y2="1265.81638" id="Path-3" stroke="#979797" mask="url(#mask-6)"></line>
+            <line x1="-3.41060513e-13" y1="1412.67295" x2="103" y2="1412.67295" id="Path-4" stroke="#979797" mask="url(#mask-6)"></line>
+            <path d="M41.3956115,-0.13574071 C41.3956115,24.9927447 84.1965444,40.2644368 103.395612,40.2644368 C110.767253,40.2644368 117.529941,40.2644368 123.683677,40.2644368 L123.683677,-0.13574071 C75.6044845,-0.0452469033 48.1751295,-0.0452469033 41.3956115,-0.13574071 Z" id="Path-5" fill="#00299C" mask="url(#mask-6)"></path>
+            <g mask="url(#mask-6)" fill="#00299C">
+                <g transform="translate(6.641305, 765.576433)">
+                    <rect id="Rectangle" transform="translate(61.608462, 264.560629) rotate(-71.000000) translate(-61.608462, -264.560629) " x="-104.391538" y="256.560629" width="332" height="16"></rect>
+                    <rect id="Rectangle-Copy" transform="translate(63.608462, 159.560629) rotate(-71.000000) translate(-63.608462, -159.560629) " x="-102.391538" y="151.560629" width="332" height="16"></rect>
+                    <rect id="Rectangle-Copy-2" transform="translate(63.608462, 354.560629) rotate(-71.000000) translate(-63.608462, -354.560629) " x="-102.391538" y="346.560629" width="332" height="16"></rect>
+                </g>
+            </g>
+        </g>
+        <g id="Group" transform="translate(102.000000, 0.000000)">
+            <g id="rocket-half" transform="translate(51.500000, 792.500000) scale(-1, 1) translate(-51.500000, -792.500000) ">
+                <g id="thruster" transform="translate(24.000000, 1486.000000)">
+                    <g id="thruster-half">
+                        <mask id="mask-8" fill="white">
+                            <use xlink:href="#path-7"></use>
+                        </mask>
+                        <use id="Mask" fill="#9B9B9B" xlink:href="#path-7"></use>
+                        <rect id="Mask" fill="#4A4A4A" mask="url(#mask-8)" x="0" y="11.8881" width="27.3105" height="3.8556"></rect>
+                        <rect id="Mask-Copy-10" fill="#4A4A4A" mask="url(#mask-8)" x="0" y="3.213" width="27.3105" height="3.8556"></rect>
+                        <rect id="Mask-Copy" fill="#4A4A4A" mask="url(#mask-8)" x="0" y="20.5632" width="27.3105" height="3.8556"></rect>
+                        <rect id="Mask-Copy-2" fill="#4A4A4A" mask="url(#mask-8)" x="0" y="29.2383" width="27.3105" height="3.8556"></rect>
+                        <rect id="Mask-Copy-3" fill="#4A4A4A" mask="url(#mask-8)" x="0" y="37.9134" width="27.3105" height="3.8556"></rect>
+                        <rect id="Mask-Copy-4" fill="#4A4A4A" mask="url(#mask-8)" x="0" y="46.5885" width="27.3105" height="3.8556"></rect>
+                        <rect id="Mask-Copy-5" fill="#4A4A4A" mask="url(#mask-8)" x="0" y="55.2636" width="27.3105" height="3.8556"></rect>
+                        <rect id="Mask-Copy-6" fill="#4A4A4A" mask="url(#mask-8)" x="0" y="63.9387" width="27.3105" height="3.8556"></rect>
+                        <rect id="Mask-Copy-7" fill="#4A4A4A" mask="url(#mask-8)" x="0" y="72.6138" width="27.3105" height="3.8556"></rect>
+                        <rect id="Mask-Copy-8" fill="#4A4A4A" mask="url(#mask-8)" x="0" y="81.2889" width="27.3105" height="3.8556"></rect>
+                        <rect id="Mask-Copy-9" fill="#4A4A4A" mask="url(#mask-8)" x="0" y="89.964" width="27.3105" height="3.8556"></rect>
+                    </g>
+                    <g id="Group" transform="translate(26.989200, 0.000000)">
+                        <g id="thruster-half" transform="translate(13.655250, 49.319550) scale(-1, 1) translate(-13.655250, -49.319550) ">
+                            <mask id="mask-10" fill="white">
+                                <use xlink:href="#path-9"></use>
+                            </mask>
+                            <use id="Mask" fill="#9B9B9B" xlink:href="#path-9"></use>
+                            <rect id="Mask" fill="#4A4A4A" mask="url(#mask-10)" x="0" y="11.8881" width="27.3105" height="3.8556"></rect>
+                            <rect id="Mask-Copy-10" fill="#4A4A4A" mask="url(#mask-10)" x="0" y="3.213" width="27.3105" height="3.8556"></rect>
+                            <rect id="Mask-Copy" fill="#4A4A4A" mask="url(#mask-10)" x="0" y="20.5632" width="27.3105" height="3.8556"></rect>
+                            <rect id="Mask-Copy-2" fill="#4A4A4A" mask="url(#mask-10)" x="0" y="29.2383" width="27.3105" height="3.8556"></rect>
+                            <rect id="Mask-Copy-3" fill="#4A4A4A" mask="url(#mask-10)" x="0" y="37.9134" width="27.3105" height="3.8556"></rect>
+                            <rect id="Mask-Copy-4" fill="#4A4A4A" mask="url(#mask-10)" x="0" y="46.5885" width="27.3105" height="3.8556"></rect>
+                            <rect id="Mask-Copy-5" fill="#4A4A4A" mask="url(#mask-10)" x="0" y="55.2636" width="27.3105" height="3.8556"></rect>
+                            <rect id="Mask-Copy-6" fill="#4A4A4A" mask="url(#mask-10)" x="0" y="63.9387" width="27.3105" height="3.8556"></rect>
+                            <rect id="Mask-Copy-7" fill="#4A4A4A" mask="url(#mask-10)" x="0" y="72.6138" width="27.3105" height="3.8556"></rect>
+                            <rect id="Mask-Copy-8" fill="#4A4A4A" mask="url(#mask-10)" x="0" y="81.2889" width="27.3105" height="3.8556"></rect>
+                            <rect id="Mask-Copy-9" fill="#4A4A4A" mask="url(#mask-10)" x="0" y="89.964" width="27.3105" height="3.8556"></rect>
+                        </g>
+                    </g>
+                </g>
+                <mask id="mask-12" fill="white">
+                    <use xlink:href="#path-11"></use>
+                </mask>
+                <use id="Mask" stroke="#979797" fill="#D9D9D9" xlink:href="#path-11"></use>
+                <line x1="36.8180469" y1="740.41532" x2="103" y2="740.41532" id="Path-2" stroke="#979797" mask="url(#mask-12)"></line>
+                <line x1="33.6998006" y1="1265.81638" x2="103" y2="1265.81638" id="Path-3" stroke="#979797" mask="url(#mask-12)"></line>
+                <line x1="-3.41060513e-13" y1="1412.67295" x2="103" y2="1412.67295" id="Path-4" stroke="#979797" mask="url(#mask-12)"></line>
+                <path d="M41.3956115,-0.13574071 C41.3956115,24.9927447 84.1965444,40.2644368 103.395612,40.2644368 C110.767253,40.2644368 117.529941,40.2644368 123.683677,40.2644368 L123.683677,-0.13574071 C75.6044845,-0.0452469033 48.1751295,-0.0452469033 41.3956115,-0.13574071 Z" id="Path-5" fill="#00299C" mask="url(#mask-12)"></path>
+                <g id="Group" mask="url(#mask-12)" fill="#00299C">
+                    <g transform="translate(6.641305, 765.576433)">
+                        <rect id="Rectangle" transform="translate(61.608462, 264.560629) rotate(-71.000000) translate(-61.608462, -264.560629) " x="-104.391538" y="256.560629" width="332" height="16"></rect>
+                        <rect id="Rectangle-Copy" transform="translate(63.608462, 159.560629) rotate(-71.000000) translate(-63.608462, -159.560629) " x="-102.391538" y="151.560629" width="332" height="16"></rect>
+                        <rect id="Rectangle-Copy-2" transform="translate(63.608462, 354.560629) rotate(-71.000000) translate(-63.608462, -354.560629) " x="-102.391538" y="346.560629" width="332" height="16"></rect>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
