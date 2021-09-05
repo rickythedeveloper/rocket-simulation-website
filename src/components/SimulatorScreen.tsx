@@ -24,11 +24,15 @@ const SIMULATION_DT = 0.01;
 const sections = [
 	{
 		title: 'Hello',
+		content: <div>Hello</div>,
 		position: { x: 0, y: EARTH_RADIUS + 500 },
+		radius: 100,
 	},
 	{
 		title: 'Second sectio',
+		content: <div>Broo</div>,
 		position: { x: 500, y: EARTH_RADIUS + 200 },
+		radius: 150,
 	},
 ];
 
@@ -134,7 +138,11 @@ export default class SimulatorScreen extends React.Component<Props, State> {
 		};
 		return (
 			<div className={'simulator-screen'} style={containerStyle}>
-				<PilotView rocket={this.rocket} sections={sections}/>
+				<PilotView
+					rocket={this.rocket}
+					sections={sections}
+					showSection={(section) => {console.log(section.title);}}
+				/>
 				<div style={{ ...buttonsContainer, ...simulationCoreButtonsContainer }}>
 					<GenericButton style={{
 						top: 0,
