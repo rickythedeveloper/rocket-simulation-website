@@ -9,6 +9,7 @@ import KeyboardStates from '../utils/KeyboardStates';
 import GenericButton from './generic/GenericButton';
 import Modal from './generic/Modal';
 import SectionModel from '../models/Section';
+import sections from '../data/sections';
 
 interface Props {
 	style?: CSSProperties;
@@ -27,20 +28,6 @@ const DEFAULT_STATE: State = {
 	modalContent: <div/>,
 };
 const SIMULATION_DT = 0.01;
-const sections = [
-	{
-		title: 'Hello',
-		content: <div style={{ backgroundColor: 'red' }}>Hello</div>,
-		position: { x: 0, y: EARTH_RADIUS + 500 },
-		radius: 100,
-	},
-	{
-		title: 'Second sectio',
-		content: <div>Broo</div>,
-		position: { x: 500, y: EARTH_RADIUS + 200 },
-		radius: 150,
-	},
-];
 
 export default class SimulatorScreen extends React.Component<Props, State> {
 

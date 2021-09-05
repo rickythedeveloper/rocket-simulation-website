@@ -11,7 +11,7 @@ import SectionModel from '../../models/Section';
 
 interface Props {
 	rocket: RocketModel;
-	sections: SectionModel[];
+	sections: readonly SectionModel[];
 	showSection: (section: SectionModel) => void;
 	style?: CSSProperties;
 }
