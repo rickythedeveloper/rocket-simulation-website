@@ -2,6 +2,7 @@ import React, { CSSProperties } from 'react';
 import { EARTH_RADIUS } from '../../models/bodies/constants';
 import RocketModel from '../../models/bodies/Rocket';
 import RocketElement from './Rocket';
+import Stars from './Stars';
 
 interface Props {
 	rocket: RocketModel;
@@ -77,6 +78,7 @@ export default class PilotView extends React.Component<Props, State> {
 		};
 		return (
 			<div className={'pilot-view'} style={containerStyle}>
+				<Stars density={0.5} minSize={1} maxSize={10} style={{ height: '100%', width: '100%' }}/>
 				<div className={'land'} style={landStyle}/>
 				<RocketElement rocket={this.props.rocket} style={rocketStyle} />
 			</div>
