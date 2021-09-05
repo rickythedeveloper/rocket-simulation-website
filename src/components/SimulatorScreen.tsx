@@ -7,6 +7,9 @@ import Rocket from '../models/bodies/Rocket';
 import { EARTH_RADIUS } from '../models/bodies/constants';
 import KeyboardStates from '../utils/KeyboardStates';
 import GenericButton from './generic/GenericButton';
+import Modal from './generic/Modal';
+import SectionModel from '../models/Section';
+import sections from '../data/sections';
 
 interface Props {
 	style?: CSSProperties;
@@ -14,11 +17,15 @@ interface Props {
 interface State {
 	rocketPosition: Vector2D;
 	simulationIsRunning: boolean;
+	modalIsShown: boolean;
+	modalContent: JSX.Element;
 }
 
 const DEFAULT_STATE: State = {
 	rocketPosition: new Vector2D(0, EARTH_RADIUS),
 	simulationIsRunning: false,
+	modalIsShown: false,
+	modalContent: <div/>,
 };
 const SIMULATION_DT = 0.01;
 
@@ -99,8 +106,15 @@ export default class SimulatorScreen extends React.Component<Props, State> {
 		this.simulator.setBodies(this.rocket, this.earth);
 	}
 
-	pauseSimulation() {
+	pauseOrResumeSimulation() {
 		this.setState((prev) => {return { simulationIsRunning: !prev.simulationIsRunning };});
+	}
+
+	showModal(section: SectionModel) {
+		this.setState({
+			modalIsShown: true,
+			modalContent: section.content,
+		});
 	}
 
 	render() {
@@ -124,7 +138,14 @@ export default class SimulatorScreen extends React.Component<Props, State> {
 		};
 		return (
 			<div className={'simulator-screen'} style={containerStyle}>
-				<PilotView rocket={this.rocket}/>
+				<PilotView
+					rocket={this.rocket}
+					sections={sections}
+					showSection={(section) => {
+						this.pauseOrResumeSimulation();
+						this.showModal(section);
+					}}
+				/>
 				<div style={{ ...buttonsContainer, ...simulationCoreButtonsContainer }}>
 					<GenericButton style={{
 						top: 0,
@@ -135,7 +156,7 @@ export default class SimulatorScreen extends React.Component<Props, State> {
 					<GenericButton style={{
 						top: 0,
 						left: 100,
-					}} onClick={() => { this.pauseSimulation(); }}>
+					}} onClick={() => { this.pauseOrResumeSimulation(); }}>
 						{this.state.simulationIsRunning ? 'Pause' : 'Resume'}
 					</GenericButton>
 				</div>
@@ -159,6 +180,12 @@ export default class SimulatorScreen extends React.Component<Props, State> {
 						Right
 					</GenericButton>
 				</div>
+				<Modal isShown={this.state.modalIsShown} didTouchOutside={() => {
+					this.setState({ modalIsShown: false });
+					this.pauseOrResumeSimulation();
+				}}>
+					{this.state.modalContent}
+				</Modal>
 			</div>
 		);
 	}

@@ -5,19 +5,26 @@ import RocketElement from './Rocket';
 import Stars from './Stars';
 import Vector2D from '../../models/Vector2D';
 import FlightInfoDisplay from './FlightInfoDisplay';
+import { relativePosition, getDistanceBetween } from '../../utils/Position';
+import SectionElement from './Section';
+import SectionModel from '../../models/Section';
 
 interface Props {
 	rocket: RocketModel;
+	sections: readonly SectionModel[];
+	showSection: (section: SectionModel) => void;
 	style?: CSSProperties;
 }
 interface State {
 	rocketCenterHeight: number;
 	rocketImageAngle: number; // angle by which we rotate the rocket in degrees. positive = clockwise.
+	currentSection: SectionModel | null;
 }
 
 const DEFAULT_STATE: State = {
 	rocketCenterHeight: 0,
 	rocketImageAngle: 0,
+	currentSection: null,
 };
 
 const MAX_HEIGHT_COLOR = 20000;
@@ -61,6 +68,19 @@ export default class PilotView extends React.Component<Props, State> {
 		};
 	}
 
+	componentDidUpdate() {
+		let newCurrentSection: SectionModel | null = null;
+		this.props.sections.forEach(section => {
+			const distance = getDistanceBetween(section.position, this.props.rocket.state.position);
+			if (distance < section.radius) newCurrentSection = section;
+		});
+
+		if (this.state.currentSection !== newCurrentSection) {
+			if (newCurrentSection !== null) this.props.showSection(newCurrentSection);
+			this.setState({ currentSection: newCurrentSection });
+		}
+	}
+
 	render() {
 		const lightStrength = getLightStrength(this.state.rocketCenterHeight);
 		const containerStyle: CSSProperties = {
@@ -93,6 +113,21 @@ export default class PilotView extends React.Component<Props, State> {
 				rotateZ(${this.state.rocketImageAngle}deg)
 			`,
 		};
+		const sections = this.props.sections.map(sec => {
+			const relativePositionToSection = relativePosition(this.props.rocket.state.position, sec.position);
+			return (
+				<SectionElement key={sec.title} title={sec.title} radius={sec.radius} style={{
+					position: 'absolute',
+					top: '50%',
+					left: '50%',
+					transform: `translate(
+					calc(-50% + ${relativePositionToSection.x}px), 
+					calc(-50% - ${relativePositionToSection.y}px)
+				)`,
+				}}/>
+			);
+		});
+
 		return (
 			<div className={'pilot-view'} style={containerStyle}>
 				<Stars density={0.5} minSize={1} maxSize={10} style={{ height: '100%', width: '100%' }}/>
@@ -108,6 +143,7 @@ export default class PilotView extends React.Component<Props, State> {
 						right: 10,
 					}}
 				/>
+				{sections}
 			</div>
 		);
 	}

@@ -15,3 +15,7 @@ export function angleOfPosition(position: Position): number {
 	if (position.x > 0) return angleRadians;
 	return angleRadians + (position.y > 0 ? 1 : -1) * Math.PI;
 }
+
+export function relativePosition(from: Position, to: Position) {
+	return { x: to.x - from.x, y: to.y - from.y };
+}
