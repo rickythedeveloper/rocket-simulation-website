@@ -3,6 +3,8 @@ import { EARTH_RADIUS, ROCKET_HEIGHT, ROCKET_WIDTH } from '../../models/bodies/c
 import RocketModel from '../../models/bodies/Rocket';
 import RocketElement from './Rocket';
 import Stars from './Stars';
+import Vector2D from '../../models/Vector2D';
+import FlightInfoDisplay from './FlightInfoDisplay';
 
 interface Props {
 	rocket: RocketModel;
@@ -24,6 +26,22 @@ function getLightStrength(height: number): number {
 	if (height < 0) return 1;
 	if (height > MAX_HEIGHT_COLOR) return 0;
 	return 1 - height / MAX_HEIGHT_COLOR;
+}
+
+function heightOfPoint(point: Vector2D): number {
+	return point.magnitude - EARTH_RADIUS;
+}
+
+function getRocketHeight(rocket: RocketModel): number {
+	let minHeight: number = Infinity;
+	rocket.testPoints.forEach(point => {
+		const pointGlobalCoords = Vector2D.sum(rocket.state.position, point);
+		const height = heightOfPoint(pointGlobalCoords);
+		if (minHeight === undefined || height < minHeight) {
+			minHeight = height;
+		}
+	});
+	return minHeight;
 }
 
 export default class PilotView extends React.Component<Props, State> {
@@ -80,6 +98,16 @@ export default class PilotView extends React.Component<Props, State> {
 				<Stars density={0.5} minSize={1} maxSize={10} style={{ height: '100%', width: '100%' }}/>
 				<div className={'land'} style={landStyle}/>
 				<RocketElement rocket={this.props.rocket} style={rocketStyle} />
+				<FlightInfoDisplay
+					speed={Math.round(this.props.rocket.state.velocity.magnitude)}
+					height={Math.round(getRocketHeight(this.props.rocket))}
+					rocketPosition={this.props.rocket.state.position}
+					style={{
+						position: 'absolute',
+						top: 10,
+						right: 10,
+					}}
+				/>
 			</div>
 		);
 	}

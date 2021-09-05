@@ -1,13 +1,10 @@
 import React, { CSSProperties } from 'react';
 import rocketImage from '../../../assets/rocket.svg';
-import FlightInfoDisplay from './FlightInfoDisplay';
 import VelocityIndicator from './VelocityIndicator';
 import RocketModel from '../../../models/bodies/Rocket';
 import Particles, { ParticlesConfig } from '../../generic/Particles';
-import { EARTH_RADIUS } from '../../../models/bodies/constants';
 import ThrustParticle from './ThrustParticle';
 import Position from '../../../utils/Position';
-import Vector2D from '../../../models/Vector2D';
 
 interface Props {
 	rocket: RocketModel;
@@ -52,22 +49,6 @@ const thrustParticlesConfig = (thrustStrength: number): ParticlesConfig => {
 	};
 };
 
-function heightOfPoint(point: Vector2D): number {
-	return point.magnitude - EARTH_RADIUS;
-}
-
-function getRocketHeight(rocket: RocketModel): number {
-	let minHeight: number = Infinity;
-	rocket.testPoints.forEach(point => {
-		const pointGlobalCoords = Vector2D.sum(rocket.state.position, point);
-		const height = heightOfPoint(pointGlobalCoords);
-		if (minHeight === undefined || height < minHeight) {
-			minHeight = height;
-		}
-	});
-	return minHeight;
-}
-
 export default class Rocket extends React.Component<Props, State> {
 	render() {
 		const rocketStyle: CSSProperties = {
@@ -83,18 +64,6 @@ export default class Rocket extends React.Component<Props, State> {
 					maxWidth: '100%',
 					maxHeight: '100%',
 				}}/>
-				<FlightInfoDisplay
-					speed={Math.round(this.props.rocket.state.velocity.magnitude)}
-					height={Math.round(getRocketHeight(this.props.rocket))}
-					rocketPosition={this.props.rocket.state.position}
-					style={{
-						position: 'absolute',
-						width: '120px',
-						top: '50%',
-						left: '100%',
-						transform: 'translate(10px, -50%)',
-					}}
-				/>
 				<VelocityIndicator
 					arrowInnerRadius={180}
 					arrowOuterRadius={280}

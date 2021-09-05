@@ -1,5 +1,5 @@
 import React, { CSSProperties } from 'react';
-import Vector2D from '../../../models/Vector2D';
+import Vector2D from '../../models/Vector2D';
 
 interface Props {
 	speed: number;
