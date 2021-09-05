@@ -1,5 +1,5 @@
 import React, { CSSProperties } from 'react';
-import rocketImage from '../../../assets/rocket.png';
+import rocketImage from '../../../assets/rocket.svg';
 import FlightInfoDisplay from './FlightInfoDisplay';
 import VelocityIndicator from './VelocityIndicator';
 import RocketModel from '../../../models/bodies/Rocket';
@@ -18,9 +18,9 @@ function getHeight(rocket: RocketModel): number { return rocket.state.position.m
 
 const THRUST_PARTICLE_DURATION = 250;
 const THRUST_PARTICLE_SPEED = 0.6; // 'Pixels' per millisecond
-const THRUST_PARTICLE_COUNT = 80;
-const THRUST_WIDTH = 20;
-const THRUST_MARGIN = 10;
+const THRUST_PARTICLE_COUNT = 60;
+const THRUST_WIDTH = 10;
+const THRUST_MARGIN = '15%';
 
 const thrustParticleUpdatePosition = (pos: Position, dt: number) => {
 	return { x: pos.x, y: pos.y + dt * THRUST_PARTICLE_SPEED };
@@ -28,7 +28,7 @@ const thrustParticleUpdatePosition = (pos: Position, dt: number) => {
 const thrustParticlesCommonStyle = (thrustDirection: number): CSSProperties => {
 	return {
 		position: 'absolute',
-		bottom: 0,
+		bottom: 12,
 		width: THRUST_WIDTH,
 		transform: `rotateZ(${-thrustDirection * 180 / Math.PI}deg)`,
 	};
@@ -40,7 +40,7 @@ const getThrustParticle = (time: number) => (
 	<ThrustParticle lifecycle={time / THRUST_PARTICLE_DURATION}/>
 );
 const thrustParticleInitialPosition = () => {
-	return { x: Math.random() * THRUST_WIDTH, y: Math.random() * 10 };
+	return { x: Math.random() * THRUST_WIDTH, y: Math.random() * 20 };
 };
 const thrustParticlesConfig = (thrustStrength: number): ParticlesConfig => {
 	return {
@@ -56,7 +56,6 @@ const thrustParticlesConfig = (thrustStrength: number): ParticlesConfig => {
 export default class Rocket extends React.Component<Props, State> {
 	render() {
 		const rocketStyle: CSSProperties = {
-			backgroundColor: '#f003',
 			alignItems: 'center',
 			justifyContent: 'center',
 			display: 'flex',
@@ -69,7 +68,6 @@ export default class Rocket extends React.Component<Props, State> {
 					maxWidth: '100%',
 					maxHeight: '100%',
 				}}/>
-				{/* {this.props.children} */}
 				<FlightInfoDisplay
 					speed={Math.round(this.props.rocket.state.velocity.magnitude)}
 					height={Math.round(getHeight(this.props.rocket))}
@@ -83,8 +81,8 @@ export default class Rocket extends React.Component<Props, State> {
 					}}
 				/>
 				<VelocityIndicator
-					arrowInnerRadius={80}
-					arrowOuterRadius={130}
+					arrowInnerRadius={180}
+					arrowOuterRadius={280}
 					angularPosition={
 						this.props.rocket.state.velocity.angle
 							- this.props.rocket.state.angularPosition

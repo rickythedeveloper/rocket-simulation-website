@@ -18,7 +18,7 @@ const DEFAULT_STATE: State = {
 	rocketImageAngle: 0,
 };
 
-const ROCKET_SIZE = 100;
+const ROCKET_HEIGHT = 350;
 const MAX_HEIGHT_COLOR = 20000;
 
 function getLightStrength(height: number): number {
@@ -62,13 +62,12 @@ export default class PilotView extends React.Component<Props, State> {
 			top: '50%',
 			width: '100%',
 			height: '100%',
-			transform: `translate(0, ${ROCKET_SIZE / 2 + this.state.height}px)`,
+			transform: `translate(0, ${ROCKET_HEIGHT / 2 + this.state.height}px)`,
 			borderTop: '5px solid black',
 		};
 		const rocketStyle: CSSProperties = {
 			position: 'absolute',
-			width: `${ROCKET_SIZE}px`,
-			height: `${ROCKET_SIZE}px`,
+			height: `${ROCKET_HEIGHT}px`,
 			top: '50%',
 			left: '50%',
 			transform: `
