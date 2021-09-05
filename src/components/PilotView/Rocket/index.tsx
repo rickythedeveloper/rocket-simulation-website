@@ -7,14 +7,13 @@ import Particles, { ParticlesConfig } from '../../generic/Particles';
 import { EARTH_RADIUS } from '../../../models/bodies/constants';
 import ThrustParticle from './ThrustParticle';
 import Position from '../../../utils/Position';
+import Vector2D from '../../../models/Vector2D';
 
 interface Props {
 	rocket: RocketModel;
 	style?: CSSProperties;
 }
 interface State {}
-
-function getHeight(rocket: RocketModel): number { return rocket.state.position.magnitude - EARTH_RADIUS; }
 
 const THRUST_PARTICLE_DURATION = 250;
 const THRUST_PARTICLE_SPEED = 0.6; // 'Pixels' per millisecond
@@ -53,6 +52,22 @@ const thrustParticlesConfig = (thrustStrength: number): ParticlesConfig => {
 	};
 };
 
+function heightOfPoint(point: Vector2D): number {
+	return point.magnitude - EARTH_RADIUS;
+}
+
+function getRocketHeight(rocket: RocketModel): number {
+	let minHeight: number = Infinity;
+	rocket.testPoints.forEach(point => {
+		const pointGlobalCoords = Vector2D.sum(rocket.state.position, point);
+		const height = heightOfPoint(pointGlobalCoords);
+		if (minHeight === undefined || height < minHeight) {
+			minHeight = height;
+		}
+	});
+	return minHeight;
+}
+
 export default class Rocket extends React.Component<Props, State> {
 	render() {
 		const rocketStyle: CSSProperties = {
@@ -70,7 +85,7 @@ export default class Rocket extends React.Component<Props, State> {
 				}}/>
 				<FlightInfoDisplay
 					speed={Math.round(this.props.rocket.state.velocity.magnitude)}
-					height={Math.round(getHeight(this.props.rocket))}
+					height={Math.round(getRocketHeight(this.props.rocket))}
 					rocketPosition={this.props.rocket.state.position}
 					style={{
 						position: 'absolute',

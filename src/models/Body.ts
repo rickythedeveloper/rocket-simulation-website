@@ -21,7 +21,7 @@ export default abstract class Body {
 
 	canMove: boolean = true;
 
-	testPoints: Vector2D[] = [];
+	abstract get testPoints(): Vector2D[];
 
 	abstract get additionalForce(): Vector2D;
 

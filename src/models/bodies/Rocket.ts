@@ -1,7 +1,7 @@
 import Body from '../Body';
 import Vector2D from '../Vector2D';
 import { EARTH_RADIUS, ROCKET_MAX_THRUST } from '../bodies/constants';
-import { ROCKET_MASS, ROCKET_SIZE } from '../bodies/constants';
+import { ROCKET_MASS, ROCKET_HALF_HEIGHT, ROCKET_HALF_WIDTH } from '../bodies/constants';
 
 export default class Rocket extends Body {
 
@@ -39,6 +39,26 @@ export default class Rocket extends Body {
 		return new Vector2D(x, y);
 	}
 
+	get rocketLeftDirection(): Vector2D {
+		const rocketDirection = this.rocketDirection;
+		const angle = Math.PI / 2;
+		return new Vector2D(
+			rocketDirection.x * Math.cos(angle) - rocketDirection.y * Math.sin(angle),
+			rocketDirection.x * Math.sin(angle) + rocketDirection.y * Math.cos(angle),
+		);
+	}
+
+	get testPoints(): Vector2D[] {
+		const rocketDirection = this.rocketDirection;
+		const rocketLeftDirection = this.rocketLeftDirection;
+		return [
+			Vector2D.sum(rocketDirection.scaled(ROCKET_HALF_HEIGHT), rocketLeftDirection.scaled(ROCKET_HALF_WIDTH)),
+			Vector2D.sum(rocketDirection.scaled(ROCKET_HALF_HEIGHT), rocketLeftDirection.scaled(-ROCKET_HALF_WIDTH)),
+			Vector2D.sum(rocketDirection.scaled(-ROCKET_HALF_HEIGHT), rocketLeftDirection.scaled(ROCKET_HALF_WIDTH)),
+			Vector2D.sum(rocketDirection.scaled(-ROCKET_HALF_HEIGHT), rocketLeftDirection.scaled(-ROCKET_HALF_WIDTH)),
+		];
+	}
+
 	constructor() {
 		super();
 		this.state.mass = ROCKET_MASS;
@@ -48,14 +68,8 @@ export default class Rocket extends Body {
 		this.state.angularPosition = Math.PI / 2;
 
 		this.boundaryFunction = (offset: Vector2D) => {
-			return offset.x > -ROCKET_SIZE / 2 && offset.x < ROCKET_SIZE / 2
-			&& offset.y > -ROCKET_SIZE / 2 && offset.y < ROCKET_SIZE / 2;
+			return offset.x > -ROCKET_HALF_WIDTH && offset.x < ROCKET_HALF_WIDTH
+			&& offset.y > -ROCKET_HALF_HEIGHT && offset.y < ROCKET_HALF_HEIGHT;
 		};
-		this.testPoints = [
-			new Vector2D(-ROCKET_SIZE / 2, -ROCKET_SIZE / 2),
-			new Vector2D(-ROCKET_SIZE / 2, ROCKET_SIZE / 2),
-			new Vector2D(ROCKET_SIZE / 2, ROCKET_SIZE / 2),
-			new Vector2D(ROCKET_SIZE / 2, -ROCKET_SIZE / 2),
-		];
 	}
 }

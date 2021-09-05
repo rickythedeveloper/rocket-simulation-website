@@ -7,6 +7,8 @@ export default class Earth extends Body {
 
 	get additionalTorque() { return 0; }
 
+	get testPoints(): Vector2D[] { return []; }
+
 	constructor() {
 		super();
 		this.state.mass = EARTH_MASS;
