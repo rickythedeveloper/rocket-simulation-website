@@ -5,9 +5,13 @@ import RocketElement from './Rocket';
 import Stars from './Stars';
 import Vector2D from '../../models/Vector2D';
 import FlightInfoDisplay from './FlightInfoDisplay';
+import { relativePosition } from '../../utils/Position';
+import SectionElement from './Section';
+import SectionModel from '../../models/Section';
 
 interface Props {
 	rocket: RocketModel;
+	sections: SectionModel[];
 	style?: CSSProperties;
 }
 interface State {
@@ -93,6 +97,20 @@ export default class PilotView extends React.Component<Props, State> {
 				rotateZ(${this.state.rocketImageAngle}deg)
 			`,
 		};
+		const sections = this.props.sections.map(sec => {
+			const relativePositionToSection = relativePosition(this.props.rocket.state.position, sec.position);
+			return (
+				<SectionElement key={sec.title} title={sec.title} radius={100} style={{
+					position: 'absolute',
+					top: '50%',
+					left: '50%',
+					transform: `translate(
+					calc(-50% + ${relativePositionToSection.x}px), 
+					calc(-50% - ${relativePositionToSection.y}px)
+				)`,
+				}}/>
+			);
+		});
 		return (
 			<div className={'pilot-view'} style={containerStyle}>
 				<Stars density={0.5} minSize={1} maxSize={10} style={{ height: '100%', width: '100%' }}/>
@@ -108,6 +126,7 @@ export default class PilotView extends React.Component<Props, State> {
 						right: 10,
 					}}
 				/>
+				{sections}
 			</div>
 		);
 	}
