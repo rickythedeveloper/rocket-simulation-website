@@ -10,6 +10,7 @@
     "@types/node": "^16.7.2",
     "@types/react": "^17.0.19",
     "@types/react-dom": "^17.0.9",
+    "gh-pages": "^3.2.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
@@ -17,8 +18,10 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "npm run buildSass && react-scripts start",
-    "build": "react-scripts build",
+    "build": "npm run buildSass && react-scripts build",
     "test": "react-scripts test",
     "compile": "tsc --noEmit",
     "lint": "eslint src/ --ext .ts,.tsx",
@@ -65,5 +68,6 @@
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "npm-watch": "^0.11.0"
-  }
+  },
+  "homepage": "https://rickythedeveloper.github.io/my-website"
 }
