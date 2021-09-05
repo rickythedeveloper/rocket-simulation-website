@@ -106,7 +106,7 @@ export default class SimulatorScreen extends React.Component<Props, State> {
 		this.simulator.setBodies(this.rocket, this.earth);
 	}
 
-	pauseSimulation() {
+	pauseOrResumeSimulation() {
 		this.setState((prev) => {return { simulationIsRunning: !prev.simulationIsRunning };});
 	}
 
@@ -142,7 +142,7 @@ export default class SimulatorScreen extends React.Component<Props, State> {
 					rocket={this.rocket}
 					sections={sections}
 					showSection={(section) => {
-						this.pauseSimulation();
+						this.pauseOrResumeSimulation();
 						this.showModal(section);
 					}}
 				/>
@@ -156,7 +156,7 @@ export default class SimulatorScreen extends React.Component<Props, State> {
 					<GenericButton style={{
 						top: 0,
 						left: 100,
-					}} onClick={() => { this.pauseSimulation(); }}>
+					}} onClick={() => { this.pauseOrResumeSimulation(); }}>
 						{this.state.simulationIsRunning ? 'Pause' : 'Resume'}
 					</GenericButton>
 				</div>
@@ -182,7 +182,7 @@ export default class SimulatorScreen extends React.Component<Props, State> {
 				</div>
 				<Modal isShown={this.state.modalIsShown} didTouchOutside={() => {
 					this.setState({ modalIsShown: false });
-					this.pauseSimulation();
+					this.pauseOrResumeSimulation();
 				}}>
 					{this.state.modalContent}
 				</Modal>

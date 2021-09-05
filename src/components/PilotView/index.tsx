@@ -18,13 +18,13 @@ interface Props {
 interface State {
 	rocketCenterHeight: number;
 	rocketImageAngle: number; // angle by which we rotate the rocket in degrees. positive = clockwise.
-	inSection: SectionModel | null;
+	currentSection: SectionModel | null;
 }
 
 const DEFAULT_STATE: State = {
 	rocketCenterHeight: 0,
 	rocketImageAngle: 0,
-	inSection: null,
+	currentSection: null,
 };
 
 const MAX_HEIGHT_COLOR = 20000;
@@ -69,15 +69,15 @@ export default class PilotView extends React.Component<Props, State> {
 	}
 
 	componentDidUpdate() {
-		let newInSection: SectionModel | null = null;
+		let newCurrentSection: SectionModel | null = null;
 		this.props.sections.forEach(section => {
 			const distance = getDistanceBetween(section.position, this.props.rocket.state.position);
-			if (distance < section.radius) newInSection = section;
+			if (distance < section.radius) newCurrentSection = section;
 		});
 
-		if (this.state.inSection !== newInSection) {
-			if (newInSection !== null) this.props.showSection(newInSection);
-			this.setState({ inSection: newInSection });
+		if (this.state.currentSection !== newCurrentSection) {
+			if (newCurrentSection !== null) this.props.showSection(newCurrentSection);
+			this.setState({ currentSection: newCurrentSection });
 		}
 	}
 
