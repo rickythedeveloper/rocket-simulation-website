@@ -7,6 +7,8 @@ import Rocket from '../models/bodies/Rocket';
 import { EARTH_RADIUS } from '../models/bodies/constants';
 import KeyboardStates from '../utils/KeyboardStates';
 import GenericButton from './generic/GenericButton';
+import Modal from './generic/Modal';
+import SectionModel from '../models/Section';
 
 interface Props {
 	style?: CSSProperties;
@@ -14,17 +16,21 @@ interface Props {
 interface State {
 	rocketPosition: Vector2D;
 	simulationIsRunning: boolean;
+	modalIsShown: boolean;
+	modalContent: JSX.Element;
 }
 
 const DEFAULT_STATE: State = {
 	rocketPosition: new Vector2D(0, EARTH_RADIUS),
 	simulationIsRunning: false,
+	modalIsShown: false,
+	modalContent: <div/>,
 };
 const SIMULATION_DT = 0.01;
 const sections = [
 	{
 		title: 'Hello',
-		content: <div>Hello</div>,
+		content: <div style={{ backgroundColor: 'red' }}>Hello</div>,
 		position: { x: 0, y: EARTH_RADIUS + 500 },
 		radius: 100,
 	},
@@ -117,6 +123,13 @@ export default class SimulatorScreen extends React.Component<Props, State> {
 		this.setState((prev) => {return { simulationIsRunning: !prev.simulationIsRunning };});
 	}
 
+	showModal(section: SectionModel) {
+		this.setState({
+			modalIsShown: true,
+			modalContent: section.content,
+		});
+	}
+
 	render() {
 		const containerStyle: CSSProperties = {
 			width: '100%',
@@ -141,7 +154,10 @@ export default class SimulatorScreen extends React.Component<Props, State> {
 				<PilotView
 					rocket={this.rocket}
 					sections={sections}
-					showSection={(section) => {console.log(section.title);}}
+					showSection={(section) => {
+						this.pauseSimulation();
+						this.showModal(section);
+					}}
 				/>
 				<div style={{ ...buttonsContainer, ...simulationCoreButtonsContainer }}>
 					<GenericButton style={{
@@ -177,6 +193,12 @@ export default class SimulatorScreen extends React.Component<Props, State> {
 						Right
 					</GenericButton>
 				</div>
+				<Modal isShown={this.state.modalIsShown} didTouchOutside={() => {
+					this.setState({ modalIsShown: false });
+					this.pauseSimulation();
+				}}>
+					{this.state.modalContent}
+				</Modal>
 			</div>
 		);
 	}
