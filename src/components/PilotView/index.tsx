@@ -42,13 +42,18 @@ const DEFAULT_STATE: State = {
 };
 
 const MAX_HEIGHT_COLOR = 20000;
-const MAX_SCALE = 4;
+const MAX_SCALE = 2;
 const MIN_SCALE = 10 ** (-4);
 
-function getLightStrength(height: number): number {
-	if (height < 0) return 1;
-	if (height > MAX_HEIGHT_COLOR) return 0;
-	return 1 - height / MAX_HEIGHT_COLOR;
+function getLightStrength(height: number, scale: number = 1): number {
+	const minScaleWithoutEffect = 0.01;
+	let strength: number;
+	if (height < 0) strength = 1;
+	if (height > MAX_HEIGHT_COLOR) strength = 0;
+	strength = 1 - height / MAX_HEIGHT_COLOR;
+
+	if (scale > minScaleWithoutEffect) return strength;
+	return strength * (scale / minScaleWithoutEffect);
 }
 
 function heightOfPoint(point: Vector2D): number {
@@ -103,7 +108,7 @@ export default class PilotView extends React.Component<Props, State> {
 	}
 
 	render() {
-		const lightStrength = getLightStrength(this.state.rocketCenterHeight);
+		const lightStrength = getLightStrength(this.state.rocketCenterHeight, this.state.scale);
 		const containerStyle: CSSProperties = {
 			backgroundColor: `rgba(
 				${lightStrength * 130},
