@@ -3,6 +3,7 @@ import React, { CSSProperties } from 'react';
 interface Props {
 	title: string;
 	radius: number;
+	contentScale: number;
 	style?: CSSProperties;
 }
 
@@ -22,6 +23,7 @@ export default class Section extends React.Component<Props> {
 		};
 		const titleStyle: CSSProperties = {
 			color: 'white',
+			transform: `scale(${this.props.contentScale}, ${this.props.contentScale})`,
 		};
 		return (
 			<div style={containerStyle}>

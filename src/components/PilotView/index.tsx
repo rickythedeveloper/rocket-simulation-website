@@ -141,16 +141,21 @@ export default class PilotView extends React.Component<Props, State> {
 		const sections = this.props.sections.map(sec => {
 			const relativePositionToSection = relativePosition(this.props.rocket.state.position, sec.position);
 			return (
-				<SectionElement key={sec.title} title={sec.title} radius={sec.radius} style={{
-					position: 'absolute',
-					top: `calc(50% - ${sec.radius}px - ${relativePositionToSection.y}px)`,
-					left: `calc(50% - ${sec.radius}px + ${relativePositionToSection.x}px)`,
-					transformOrigin: `
+				<SectionElement
+					key={sec.title}
+					title={sec.title}
+					radius={sec.radius}
+					contentScale={1 / this.state.scale}
+					style={{
+						position: 'absolute',
+						top: `calc(50% - ${sec.radius}px - ${relativePositionToSection.y}px)`,
+						left: `calc(50% - ${sec.radius}px + ${relativePositionToSection.x}px)`,
+						transformOrigin: `
 						${sec.radius - relativePositionToSection.x}px 
 						${sec.radius + relativePositionToSection.y}px
 					`,
-					transform: `scale(${this.state.scale}, ${this.state.scale})`,
-				}}/>
+						transform: `scale(${this.state.scale}, ${this.state.scale})`,
+					}}/>
 			);
 		});
 
