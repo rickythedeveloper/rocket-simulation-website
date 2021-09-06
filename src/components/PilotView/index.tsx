@@ -44,16 +44,16 @@ const DEFAULT_STATE: State = {
 const MAX_HEIGHT_COLOR = 20000;
 const MAX_SCALE = 2;
 const MIN_SCALE = 10 ** (-4);
+const MIN_SCALE_WITHOUT_LIGHT_EFFECT = 0.01;
 
 function getLightStrength(height: number, scale: number = 1): number {
-	const minScaleWithoutEffect = 0.01;
 	let strength: number;
 	if (height < 0) strength = 1;
 	if (height > MAX_HEIGHT_COLOR) strength = 0;
 	strength = 1 - height / MAX_HEIGHT_COLOR;
 
-	if (scale > minScaleWithoutEffect) return strength;
-	return strength * (scale / minScaleWithoutEffect);
+	if (scale > MIN_SCALE_WITHOUT_LIGHT_EFFECT) return strength;
+	return strength * (scale / MIN_SCALE_WITHOUT_LIGHT_EFFECT);
 }
 
 function heightOfPoint(point: Vector2D): number {
@@ -156,11 +156,12 @@ export default class PilotView extends React.Component<Props, State> {
 						top: `calc(50% - ${sec.radius}px - ${relativePositionToSection.y}px)`,
 						left: `calc(50% - ${sec.radius}px + ${relativePositionToSection.x}px)`,
 						transformOrigin: `
-						${sec.radius - relativePositionToSection.x}px 
-						${sec.radius + relativePositionToSection.y}px
-					`,
+							${sec.radius - relativePositionToSection.x}px 
+							${sec.radius + relativePositionToSection.y}px
+						`,
 						transform: `scale(${this.state.scale}, ${this.state.scale})`,
-					}}/>
+					}}
+				/>
 			);
 		});
 
