@@ -14,3 +14,46 @@ export function arrayWithRemovedIndices<T>(array: Array<T>, indices: number[]): 
 	});
 	return newArray;
 }
+
+export function edgeCoordsWithAngle(
+	angle: number,
+	elementWidth: number,
+	elementHeight: number,
+	padding: number,
+): { x: number; y: number } {
+	const availableHeight = elementHeight - padding * 2, availableWidth = elementWidth - padding * 2;
+	const halfAvailableHeight = availableHeight / 2, halfAvailableWidth = availableWidth / 2;
+	const cornerAngle = Math.atan(availableHeight / availableWidth);
+	if (angle <= -Math.PI) return edgeCoordsWithAngle(angle + 2 * Math.PI, elementWidth, elementHeight, padding);
+	if (angle <= -Math.PI + cornerAngle) {
+		return {
+			x: padding,
+			y: padding + halfAvailableHeight + halfAvailableWidth * Math.tan(angle),
+		};
+	}
+	if (angle <= -cornerAngle) {
+		return {
+			x: padding + halfAvailableWidth - halfAvailableHeight / Math.tan(angle),
+			y: elementHeight - padding,
+		};
+	}
+	if (angle <= cornerAngle) {
+		return {
+			x: elementWidth - padding,
+			y: padding + halfAvailableHeight - halfAvailableWidth * Math.tan(angle),
+		};
+	}
+	if (angle <= Math.PI - cornerAngle) {
+		return {
+			x: padding + halfAvailableHeight / Math.tan(angle) + halfAvailableWidth,
+			y: padding,
+		};
+	}
+	if (angle <= Math.PI) {
+		return {
+			x: padding,
+			y: padding + halfAvailableHeight + halfAvailableWidth * Math.tan(angle),
+		};
+	}
+	return edgeCoordsWithAngle(angle - 2 * Math.PI, elementWidth, elementHeight, padding);
+}

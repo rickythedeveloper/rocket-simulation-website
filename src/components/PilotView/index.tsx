@@ -9,6 +9,7 @@ import { relativePosition, getDistanceBetween, angleOfPosition } from '../../uti
 import SectionElement from './Section';
 import SectionModel from '../../models/Section';
 import VelocityIndicator from './Rocket/VelocityIndicator';
+import { edgeCoordsWithAngle } from '../../utils';
 
 interface Props {
 	rocket: RocketModel;
@@ -54,49 +55,6 @@ function getRocketHeight(rocket: RocketModel): number {
 		}
 	});
 	return minHeight;
-}
-
-function edgeCoordsWithAngle(
-	angle: number,
-	elementWidth: number,
-	elementHeight: number,
-	padding: number,
-): { x: number; y: number } {
-	const availableHeight = elementHeight - padding * 2, availableWidth = elementWidth - padding * 2;
-	const halfAvailableHeight = availableHeight / 2, halfAvailableWidth = availableWidth / 2;
-	const cornerAngle = Math.atan(availableHeight / availableWidth);
-	if (angle <= -Math.PI) return edgeCoordsWithAngle(angle + 2 * Math.PI, elementWidth, elementHeight, padding);
-	if (angle <= -Math.PI + cornerAngle) {
-		return {
-			x: padding,
-			y: padding + halfAvailableHeight + halfAvailableWidth * Math.tan(angle),
-		};
-	}
-	if (angle <= -cornerAngle) {
-		return {
-			x: padding + halfAvailableWidth - halfAvailableHeight / Math.tan(angle),
-			y: elementHeight - padding,
-		};
-	}
-	if (angle <= cornerAngle) {
-		return {
-			x: elementWidth - padding,
-			y: padding + halfAvailableHeight - halfAvailableWidth * Math.tan(angle),
-		};
-	}
-	if (angle <= Math.PI - cornerAngle) {
-		return {
-			x: padding + halfAvailableHeight / Math.tan(angle) + halfAvailableWidth,
-			y: padding,
-		};
-	}
-	if (angle <= Math.PI) {
-		return {
-			x: padding,
-			y: padding + halfAvailableHeight + halfAvailableWidth * Math.tan(angle),
-		};
-	}
-	return edgeCoordsWithAngle(angle - 2 * Math.PI, elementWidth, elementHeight, padding);
 }
 
 export default class PilotView extends React.Component<Props, State> {
