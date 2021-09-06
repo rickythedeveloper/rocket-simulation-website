@@ -72,9 +72,14 @@ function getRocketHeight(rocket: RocketModel): number {
 	return minHeight;
 }
 
-function objectIsInsideView(relativePositionFromCenter: Position, viewHeight: number, viewWidth: number) {
-	return Math.abs(relativePositionFromCenter.x) < viewWidth / 2
-	&& Math.abs(relativePositionFromCenter.y) < viewHeight / 2;
+function objectIsInsideView(
+	relativePositionFromCenter: Position,
+	viewHeight: number,
+	viewWidth: number,
+	scale: number,
+) {
+	return Math.abs(relativePositionFromCenter.x * scale) < viewWidth / 2
+	&& Math.abs(relativePositionFromCenter.y * scale) < viewHeight / 2;
 }
 
 export default class PilotView extends React.Component<Props, State> {
@@ -168,7 +173,12 @@ export default class PilotView extends React.Component<Props, State> {
 		const sectionIndicators: (JSX.Element | null)[] = this.props.sections.map(sec => {
 			const distance = getDistanceBetween(this.props.rocket.state.position, sec.position);
 			const relativePositionToSection = relativePosition(this.props.rocket.state.position, sec.position);
-			if (objectIsInsideView(relativePositionToSection, this.state.viewHeight, this.state.viewWidth)) {
+			if (objectIsInsideView(
+				relativePositionToSection,
+				this.state.viewHeight,
+				this.state.viewWidth,
+				this.state.scale,
+			)) {
 				return null;
 			} else {
 				const angle = angleOfPosition(relativePositionToSection);
@@ -210,6 +220,8 @@ export default class PilotView extends React.Component<Props, State> {
 			>
 				<Stars density={0.5} minSize={1} maxSize={10} style={{ height: '100%', width: '100%' }}/>
 				<div className={'land'} style={landStyle}/>
+				{sections}
+				{sectionIndicators}
 				<RocketElement rocket={this.props.rocket} style={rocketStyle} />
 				<FlightInfoDisplay
 					speed={Math.round(this.props.rocket.state.velocity.magnitude)}
@@ -221,8 +233,6 @@ export default class PilotView extends React.Component<Props, State> {
 						right: 10,
 					}}
 				/>
-				{sections}
-				{sectionIndicators}
 			</div>
 		);
 	}
