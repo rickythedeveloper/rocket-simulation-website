@@ -5,9 +5,10 @@ import RocketElement from './Rocket';
 import Stars from './Stars';
 import Vector2D from '../../models/Vector2D';
 import FlightInfoDisplay from './FlightInfoDisplay';
-import { relativePosition, getDistanceBetween } from '../../utils/Position';
+import { relativePosition, getDistanceBetween, angleOfPosition } from '../../utils/Position';
 import SectionElement from './Section';
 import SectionModel from '../../models/Section';
+import VelocityIndicator from './Rocket/VelocityIndicator';
 
 interface Props {
 	rocket: RocketModel;
@@ -19,12 +20,16 @@ interface State {
 	rocketCenterHeight: number;
 	rocketImageAngle: number; // angle by which we rotate the rocket in degrees. positive = clockwise.
 	currentSection: SectionModel | null;
+	viewWidth: number;
+	viewHeight: number;
 }
 
 const DEFAULT_STATE: State = {
 	rocketCenterHeight: 0,
 	rocketImageAngle: 0,
 	currentSection: null,
+	viewWidth: 0,
+	viewHeight: 0,
 };
 
 const MAX_HEIGHT_COLOR = 20000;
@@ -49,6 +54,49 @@ function getRocketHeight(rocket: RocketModel): number {
 		}
 	});
 	return minHeight;
+}
+
+function edgeCoordsWithAngle(
+	angle: number,
+	elementWidth: number,
+	elementHeight: number,
+	padding: number,
+): { x: number; y: number } {
+	const availableHeight = elementHeight - padding * 2, availableWidth = elementWidth - padding * 2;
+	const halfAvailableHeight = availableHeight / 2, halfAvailableWidth = availableWidth / 2;
+	const cornerAngle = Math.atan(availableHeight / availableWidth);
+	if (angle <= -Math.PI) return edgeCoordsWithAngle(angle + 2 * Math.PI, elementWidth, elementHeight, padding);
+	if (angle <= -Math.PI + cornerAngle) {
+		return {
+			x: padding,
+			y: padding + halfAvailableHeight + halfAvailableWidth * Math.tan(angle),
+		};
+	}
+	if (angle <= -cornerAngle) {
+		return {
+			x: padding + halfAvailableWidth - halfAvailableHeight / Math.tan(angle),
+			y: elementHeight - padding,
+		};
+	}
+	if (angle <= cornerAngle) {
+		return {
+			x: elementWidth - padding,
+			y: padding + halfAvailableHeight - halfAvailableWidth * Math.tan(angle),
+		};
+	}
+	if (angle <= Math.PI - cornerAngle) {
+		return {
+			x: padding + halfAvailableHeight / Math.tan(angle) + halfAvailableWidth,
+			y: padding,
+		};
+	}
+	if (angle <= Math.PI) {
+		return {
+			x: padding,
+			y: padding + halfAvailableHeight + halfAvailableWidth * Math.tan(angle),
+		};
+	}
+	return edgeCoordsWithAngle(angle - 2 * Math.PI, elementWidth, elementHeight, padding);
 }
 
 export default class PilotView extends React.Component<Props, State> {
@@ -128,8 +176,31 @@ export default class PilotView extends React.Component<Props, State> {
 			);
 		});
 
+		const sectionIndicators = this.props.sections.map(sec => {
+			const relativePositionToSection = relativePosition(this.props.rocket.state.position, sec.position);
+			const angle = angleOfPosition(relativePositionToSection);
+			const { x, y } = edgeCoordsWithAngle(angle, this.state.viewWidth, this.state.viewHeight, 100);
+			const indicatorLength = 50;
+			const arrowElementHeight = Math.abs(indicatorLength * Math.sin(angle));
+			const arrowElementWidth = Math.abs(indicatorLength * Math.cos(angle));
+			const element = <VelocityIndicator
+				arrowInnerRadius={0}
+				arrowOuterRadius={indicatorLength}
+				angularPosition={angle}
+				style={{ position: 'absolute', top: y - arrowElementHeight / 2, left: x - arrowElementWidth / 2 }}
+				key={sec.title}
+			/>;
+			return element;
+		});
+
 		return (
-			<div className={'pilot-view'} style={containerStyle}>
+			<div className={'pilot-view'} style={containerStyle} ref={el => {
+				if (el) {
+					if (el.clientHeight !== this.state.viewHeight || el.clientWidth !== this.state.viewWidth) {
+						this.setState({ viewHeight: el.clientHeight, viewWidth: el.clientWidth });
+					}
+				}
+			}}>
 				<Stars density={0.5} minSize={1} maxSize={10} style={{ height: '100%', width: '100%' }}/>
 				<div className={'land'} style={landStyle}/>
 				<RocketElement rocket={this.props.rocket} style={rocketStyle} />
@@ -144,6 +215,7 @@ export default class PilotView extends React.Component<Props, State> {
 					}}
 				/>
 				{sections}
+				{sectionIndicators}
 			</div>
 		);
 	}
