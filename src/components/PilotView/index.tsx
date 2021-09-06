@@ -5,9 +5,11 @@ import RocketElement from './Rocket';
 import Stars from './Stars';
 import Vector2D from '../../models/Vector2D';
 import FlightInfoDisplay from './FlightInfoDisplay';
-import { relativePosition, getDistanceBetween } from '../../utils/Position';
+import Position, { relativePosition, getDistanceBetween, angleOfPosition } from '../../utils/Position';
 import SectionElement from './Section';
 import SectionModel from '../../models/Section';
+import { edgeCoordsWithAngle } from '../../utils';
+import directionArrow from '../../assets/directionArrow.svg';
 
 interface Props {
 	rocket: RocketModel;
@@ -19,12 +21,16 @@ interface State {
 	rocketCenterHeight: number;
 	rocketImageAngle: number; // angle by which we rotate the rocket in degrees. positive = clockwise.
 	currentSection: SectionModel | null;
+	viewWidth: number;
+	viewHeight: number;
 }
 
 const DEFAULT_STATE: State = {
 	rocketCenterHeight: 0,
 	rocketImageAngle: 0,
 	currentSection: null,
+	viewWidth: 0,
+	viewHeight: 0,
 };
 
 const MAX_HEIGHT_COLOR = 20000;
@@ -49,6 +55,11 @@ function getRocketHeight(rocket: RocketModel): number {
 		}
 	});
 	return minHeight;
+}
+
+function objectIsInsideView(relativePositionFromCenter: Position, viewHeight: number, viewWidth: number) {
+	return Math.abs(relativePositionFromCenter.x) < viewWidth / 2
+	&& Math.abs(relativePositionFromCenter.y) < viewHeight / 2;
 }
 
 export default class PilotView extends React.Component<Props, State> {
@@ -128,8 +139,39 @@ export default class PilotView extends React.Component<Props, State> {
 			);
 		});
 
+		const sectionIndicators: (JSX.Element | null)[] = this.props.sections.map(sec => {
+			const distance = getDistanceBetween(this.props.rocket.state.position, sec.position);
+			const relativePositionToSection = relativePosition(this.props.rocket.state.position, sec.position);
+			if (objectIsInsideView(relativePositionToSection, this.state.viewHeight, this.state.viewWidth)) {
+				return null;
+			} else {
+				const angle = angleOfPosition(relativePositionToSection);
+				const { x, y } = edgeCoordsWithAngle(angle, this.state.viewWidth, this.state.viewHeight, 100);
+				const size = Math.max(20, (50000) / distance);
+				const element = <img
+					src={directionArrow}
+					style={{
+						position: 'absolute',
+						top: y - size / 2,
+						left: x - size / 2,
+						height: size,
+						width: size,
+						transform: `rotateZ(${-angle * 180 / Math.PI}deg)`,
+					}}
+					key={sec.title}
+				/>;
+				return element;
+			}
+		});
+
 		return (
-			<div className={'pilot-view'} style={containerStyle}>
+			<div className={'pilot-view'} style={containerStyle} ref={el => {
+				if (el) {
+					if (el.clientHeight !== this.state.viewHeight || el.clientWidth !== this.state.viewWidth) {
+						this.setState({ viewHeight: el.clientHeight, viewWidth: el.clientWidth });
+					}
+				}
+			}}>
 				<Stars density={0.5} minSize={1} maxSize={10} style={{ height: '100%', width: '100%' }}/>
 				<div className={'land'} style={landStyle}/>
 				<RocketElement rocket={this.props.rocket} style={rocketStyle} />
@@ -144,6 +186,7 @@ export default class PilotView extends React.Component<Props, State> {
 					}}
 				/>
 				{sections}
+				{sectionIndicators}
 			</div>
 		);
 	}
