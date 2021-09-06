@@ -1,5 +1,11 @@
 import React, { CSSProperties } from 'react';
-import { EARTH_RADIUS, ROCKET_HEIGHT, ROCKET_WIDTH } from '../../models/bodies/constants';
+import {
+	EARTH_RADIUS,
+	ROCKET_HALF_HEIGHT,
+	ROCKET_HALF_WIDTH,
+	ROCKET_HEIGHT,
+	ROCKET_WIDTH,
+} from '../../models/bodies/constants';
 import RocketModel from '../../models/bodies/Rocket';
 import RocketElement from './Rocket';
 import Stars from './Stars';
@@ -23,6 +29,7 @@ interface State {
 	currentSection: SectionModel | null;
 	viewWidth: number;
 	viewHeight: number;
+	scale: number;
 }
 
 const DEFAULT_STATE: State = {
@@ -31,9 +38,12 @@ const DEFAULT_STATE: State = {
 	currentSection: null,
 	viewWidth: 0,
 	viewHeight: 0,
+	scale: 1,
 };
 
 const MAX_HEIGHT_COLOR = 20000;
+const MAX_SCALE = 4;
+const MIN_SCALE = 10 ** (-4);
 
 function getLightStrength(height: number): number {
 	if (height < 0) return 1;
@@ -107,21 +117,25 @@ export default class PilotView extends React.Component<Props, State> {
 		const landStyle: CSSProperties = {
 			position: 'absolute',
 			backgroundColor: '#940',
-			top: '50%',
-			width: '100%',
-			height: '100%',
-			transform: `translate(0, ${this.state.rocketCenterHeight}px)`,
-			borderTop: '5px solid black',
+			width: EARTH_RADIUS * 2,
+			height: EARTH_RADIUS * 2,
+			borderRadius: EARTH_RADIUS,
+			top: `calc(50% + ${this.state.rocketCenterHeight}px)`,
+			left: `calc(50% - ${EARTH_RADIUS}px)`,
+			border: '1000px solid #940',
+			transformOrigin: `${EARTH_RADIUS}px ${-this.state.rocketCenterHeight}px`,
+			transform: `scale(${this.state.scale}, ${this.state.scale})`,
 		};
 		const rocketStyle: CSSProperties = {
 			position: 'absolute',
 			height: ROCKET_HEIGHT,
 			width: ROCKET_WIDTH,
-			top: '50%',
-			left: '50%',
+			top: `calc(50% - ${ROCKET_HALF_HEIGHT}px)`,
+			left: `calc(50% - ${ROCKET_HALF_WIDTH}px)`,
+			transformOrigin: 'center',
 			transform: `
-				translate(-50%, -50%)
 				rotateZ(${this.state.rocketImageAngle}deg)
+				scale(${this.state.scale}, ${this.state.scale})
 			`,
 		};
 		const sections = this.props.sections.map(sec => {
@@ -129,12 +143,13 @@ export default class PilotView extends React.Component<Props, State> {
 			return (
 				<SectionElement key={sec.title} title={sec.title} radius={sec.radius} style={{
 					position: 'absolute',
-					top: '50%',
-					left: '50%',
-					transform: `translate(
-					calc(-50% + ${relativePositionToSection.x}px), 
-					calc(-50% - ${relativePositionToSection.y}px)
-				)`,
+					top: `calc(50% - ${sec.radius}px - ${relativePositionToSection.y}px)`,
+					left: `calc(50% - ${sec.radius}px + ${relativePositionToSection.x}px)`,
+					transformOrigin: `
+						${sec.radius - relativePositionToSection.x}px 
+						${sec.radius + relativePositionToSection.y}px
+					`,
+					transform: `scale(${this.state.scale}, ${this.state.scale})`,
 				}}/>
 			);
 		});
@@ -165,13 +180,23 @@ export default class PilotView extends React.Component<Props, State> {
 		});
 
 		return (
-			<div className={'pilot-view'} style={containerStyle} ref={el => {
-				if (el) {
-					if (el.clientHeight !== this.state.viewHeight || el.clientWidth !== this.state.viewWidth) {
-						this.setState({ viewHeight: el.clientHeight, viewWidth: el.clientWidth });
+			<div
+				className={'pilot-view'}
+				style={containerStyle}
+				ref={el => {
+					if (el) {
+						if (el.clientHeight !== this.state.viewHeight || el.clientWidth !== this.state.viewWidth) {
+							this.setState({ viewHeight: el.clientHeight, viewWidth: el.clientWidth });
+						}
 					}
-				}
-			}}>
+				}}
+				onWheel={(e) => {
+					this.setState(prev => {
+						const newScale = prev.scale * (1 - e.deltaY / 1000);
+						return { scale: Math.min(MAX_SCALE, Math.max(newScale, MIN_SCALE)) };
+					});
+				}}
+			>
 				<Stars density={0.5} minSize={1} maxSize={10} style={{ height: '100%', width: '100%' }}/>
 				<div className={'land'} style={landStyle}/>
 				<RocketElement rocket={this.props.rocket} style={rocketStyle} />

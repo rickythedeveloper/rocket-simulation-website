@@ -6,8 +6,8 @@ const sections: readonly Section[] = [
 	{
 		title: 'Hello',
 		content: helloSection,
-		position: { x: 0, y: EARTH_RADIUS + 500 },
-		radius: 100,
+		position: { x: 0, y: EARTH_RADIUS + 5500 },
+		radius: 5000,
 	},
 ] as const;
 
