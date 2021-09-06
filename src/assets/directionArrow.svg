@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="192px" height="314px" viewBox="0 0 192 314" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>direction arrow</title>
+    <g id="direction-arrow" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <polygon id="Path" fill="#FFFFFF" transform="translate(96.000000, 156.910324) rotate(90.000000) translate(-96.000000, -156.910324) " points="-61 194.418059 96 61 253 194.418059 253 252.820647 96 122.265411 -61 252.820647"></polygon>
+    </g>
+</svg>

@@ -8,8 +8,8 @@ import FlightInfoDisplay from './FlightInfoDisplay';
 import { relativePosition, getDistanceBetween, angleOfPosition } from '../../utils/Position';
 import SectionElement from './Section';
 import SectionModel from '../../models/Section';
-import VelocityIndicator from './Rocket/VelocityIndicator';
 import { edgeCoordsWithAngle } from '../../utils';
+import directionArrow from '../../assets/directionArrow.svg';
 
 interface Props {
 	rocket: RocketModel;
@@ -136,16 +136,20 @@ export default class PilotView extends React.Component<Props, State> {
 
 		const sectionIndicators = this.props.sections.map(sec => {
 			const relativePositionToSection = relativePosition(this.props.rocket.state.position, sec.position);
+			const distance = getDistanceBetween(this.props.rocket.state.position, sec.position);
 			const angle = angleOfPosition(relativePositionToSection);
 			const { x, y } = edgeCoordsWithAngle(angle, this.state.viewWidth, this.state.viewHeight, 100);
-			const indicatorLength = 50;
-			const arrowElementHeight = Math.abs(indicatorLength * Math.sin(angle));
-			const arrowElementWidth = Math.abs(indicatorLength * Math.cos(angle));
-			const element = <VelocityIndicator
-				arrowInnerRadius={0}
-				arrowOuterRadius={indicatorLength}
-				angularPosition={angle}
-				style={{ position: 'absolute', top: y - arrowElementHeight / 2, left: x - arrowElementWidth / 2 }}
+			const size = Math.max(20, (50000) / distance);
+			const element = <img
+				src={directionArrow}
+				style={{
+					position: 'absolute',
+					top: y - size / 2,
+					left: x - size / 2,
+					height: size,
+					width: size,
+					transform: `rotateZ(${-angle * 180 / Math.PI}deg)`,
+				}}
 				key={sec.title}
 			/>;
 			return element;
